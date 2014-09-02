@@ -1,0 +1,33 @@
+前面操作和Ubuntu的操作一样
+chmod u+x systype.sh
+然后 make
+紧接着报了缺少 stropts.h 引发的一大堆错误
+
+解决：
+①试着修改 ~/.bash_profile
+在最后那行添加
+
+PATH=$PATH:$HOME/bin:/usr/local/arm-linux/include:
+
+export PATH
+然后source 一下，重新 make
+
+②如果还是编不过，直接修改
+Make.defines.linux：
+
+直接在 CFLAGS 里把 CentOS 的 stropts.h 路径
+
+CFLAGS=-DLINUX -g -ansi -I$(WKDIR)/include -I/usr/local/arm-linux/include -Wall -D_GNU_SOURCE $(EXTRA)
+
+重新编译，通过。
+
+【原因】Ubuntu 和 CentOS 的 stropts.h 路径不同：
+CentOS：
+/usr/local/arm-linux/include/stropts.h
+/usr/local/arm-linux/include/bits/stropts.h
+/usr/local/arm-linux/include/sys/stropts.h
+
+Ubuntu：
+usr/include/stropts.h
+usr/include/i386-linux-gnu/sys/stropts.h
+usr/include/i386-linux-gnu/bits/stropts.h

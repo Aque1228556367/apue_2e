@@ -1,0 +1,39 @@
+源地址：
+http://www.linuxidc.com/Linux/2013-01/77467.htm
+
+在Ubuntu 12.04系统下配置apue2环境。
+
+0、为了操作方便，建议使用root权限。
+
+1、下载源码包，解压至某个目录，比如：/root/apue.2e。
+
+-------------------------------------------------------------
+
+免费下载地址在 http://linux.linuxidc.com/
+
+用户名与密码都是www.linuxidc.com
+
+具体下载目录在 /2013年资料/1月/8日/Ubuntu 12.04 配置apue2环境
+
+-------------------------------------------------------------
+
+2、将/root/apue.2e/Make.defines.linux中第6行WKDIR=/home/sar/apue.2e更改为/root/apue.2e。
+
+3、将/root/apue.2e/ipp/ipp.h中第122行中的status换为Status。（也可换为其他，但要与下面对应）
+
+4、将/root/apue.2e/ipp/printd.h中第977行中的status替换为Status。（与上面对应）
+
+5、将/root/apue.2e/threadctl/getenv1.c和/root/apue.2e/threadctl/getenv3.c中第1行#include <limits.h>更换为#include <linux/limits.h>。
+
+6、此时，如果编译通过，会在/root/apue.2e/lib/目录下生成libapue.a静态链接库文件。
+
+7、将/root/apue.2e/lib/libapue.a拷贝至/usr/local/lib/目录下。
+
+8、将/root/apue.2e/include/apue.h拷贝至/usr/local/include/目录下。
+
+9、编译示例：gcc main.c -lapue 。
+
+OVER！
+
+【查找目录下所有“figc”开头文件】
+find -iname "figc.*" -a -exec ls {} \
