@@ -4,6 +4,7 @@
 # C programs using gcc.
 
 WKDIR=~/apue_2e_svn/apue_2e/trunk/src
+SRC=./fig
 CC		= gcc
 CXX		= g++
 LEX		= flex
@@ -14,9 +15,9 @@ CXXFLAGS 	= -g   -pipe -Werror -DENCODING_UTF8 -DCHARSET_SHOW_GBK
 
 ####### third party objects, that may be not need -g to make .o much smaller 
 CXXFLAGS_3RD = 
-INCPATH  	= -I$(WKDIR)/include	
+INCPATH  	= -I$(WKDIR)/include -I/usr/inlclude 	
 LINK     	= g++
-LIBAPUE		= $(WKDIR)libapue.a
+LIBAPUE		= $(WKDIR)/lib/libapue.a
 
 LIBS_REALEASE	= -L./$(WKDIR)/lib -lapue
 LIBS_DEBUG		= -L./$(WKDIR)/lib -lapueD
@@ -25,8 +26,9 @@ LIBS_DEBUG		= -L./$(WKDIR)/lib -lapueD
 OBJECTS	 = ./debug/fig1.3.o
 TARGET   = ./bin/test
 
-./debug/fig1.3.o : $(WKDIR)/fig1.3.c
+./debug/fig1.3.o : $(SRC)/fig1.3.c
 	$(CXX) -c  $(CXXFLAGS) $(INCPATH) -o $@ $<
+	
 
 ####### Build rules
 echo:
@@ -36,10 +38,13 @@ all:  $(TARGET)
 	
 $(TARGET): $(OBJECTS) ${LIBAPUE}
 	$(LINK) -o $(TARGET)  $(OBJECTS) $(LIBS_REALEASE)
+g++ -g -o bin/test ./debug/fig1.3.o ../src/lib/libapue.a
 
 clean:
 	rm -rfv *~ core *.core
 	rm -rfv ./debug/*.o
 	rm -rfv $(TARGET)
 
-
+# g++ -c -o ./debug/fig1.3.o ./fig/fig1.3.c -I ~/apue_2e_svn/apue_2e/trunk/src/include/
+# g++ -g -o bin/test debug/fig1.3.o ../src/lib/libapue.a -I ~/apue_2e_svn/apue_2e/trunk/src/include/
+g++ -g -L~/apue_2e_svn/apue_2e/trunk/src/lib -lapue -o bin/test debug/fig1.3.o ../src/lib/libapue.a -I ~/apue_2e_svn/apue_2e/trunk/src/include/

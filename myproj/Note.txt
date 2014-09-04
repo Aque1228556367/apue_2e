@@ -1,0 +1,2 @@
+Do Command£º
+gcc -g -o bin/test fig/fig1.3.c -I../src/include ../src/lib/libapue.a
