@@ -38,13 +38,15 @@ all:  $(TARGET)
 	
 $(TARGET): $(OBJECTS) ${LIBAPUE}
 	$(LINK) -o $(TARGET)  $(OBJECTS) $(LIBS_REALEASE)
-g++ -g -o bin/test ./debug/fig1.3.o ../src/lib/libapue.a
 
 clean:
 	rm -rfv *~ core *.core
 	rm -rfv ./debug/*.o
 	rm -rfv $(TARGET)
 
-# g++ -c -o ./debug/fig1.3.o ./fig/fig1.3.c -I ~/apue_2e_svn/apue_2e/trunk/src/include/
-# g++ -g -o bin/test debug/fig1.3.o ../src/lib/libapue.a -I ~/apue_2e_svn/apue_2e/trunk/src/include/
-g++ -g -L~/apue_2e_svn/apue_2e/trunk/src/lib -lapue -o bin/test debug/fig1.3.o ../src/lib/libapue.a -I ~/apue_2e_svn/apue_2e/trunk/src/include/
+# http://blog.csdn.net/mtawaken/article/details/7416332
+# g++ -g -o bin/test ./debug/fig1.3.o ../src/lib/libapue.a
+# g++ -c ./debug/fig1.3.o ./fig/fig1.3.c -I ~/apue_2e_svn/apue_2e/trunk/src/include/
+# g++ -g -o ./bin/test ./debug/fig1.3.o ../src/lib/libapue.a -I ~/apue_2e_svn/apue_2e/trunk/src/include/
+# g++ -g -o bin/test debug/fig1.3.o libapue.a
+# g++ -g -L~/apue_2e_svn/apue_2e/trunk/src/lib -lapue -o bin/test debug/fig1.3.o ../src/lib/libapue.a -I ~/apue_2e_svn/apue_2e/trunk/src/include/
