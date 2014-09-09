@@ -45,8 +45,12 @@ clean:
 	rm -rfv $(TARGET)
 
 # http://blog.csdn.net/mtawaken/article/details/7416332
-# g++ -g -o bin/test ./debug/fig1.3.o ../src/lib/libapue.a
-# g++ -c ./debug/fig1.3.o ./fig/fig1.3.c -I ~/apue_2e_svn/apue_2e/trunk/src/include/
+# 只编译不链接
+# g++ -c ./debug/fig1.3.o ./fig/fig1.3.c -I/home/qqsprite/apue_2e_svn/apue_2e/trunk/src/include/ -I/usr/inlclude
+# 由 .o 和静态库直接链接成二进制文件
+# (1) g++ -g -o bin/test ./debug/fig1.3.o ../src/lib/libapue.a -I/usr/inlclude
+# (2) g++ -g -o ./bin/test ./debug/fig1.3.o -L../src/lib -lapue
+
 # g++ -g -o ./bin/test ./debug/fig1.3.o ../src/lib/libapue.a -I ~/apue_2e_svn/apue_2e/trunk/src/include/
 # g++ -g -o bin/test debug/fig1.3.o libapue.a
 # g++ -g -L~/apue_2e_svn/apue_2e/trunk/src/lib -lapue -o bin/test debug/fig1.3.o ../src/lib/libapue.a -I ~/apue_2e_svn/apue_2e/trunk/src/include/
