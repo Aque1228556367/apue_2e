@@ -2,15 +2,15 @@
 #include <errno.h>/* for definition of errno */
 #include <stdarg.h>/* ISO C variable aruments */
 
-static void err_doit(int,int,constchar*,va_list);
+static void err_doit(int,int,const char*, va_list);
 
 /*
 * Nonfatal error related to a system call.
 * Print a message and return.
 */
-void err_ret(constchar*fmt,...)
+void err_ret(const char*fmt,...)
 {
-	va_listap;
+	va_list ap;
 
 	va_start(ap,fmt);
 	err_doit(1,errno,fmt,ap);
@@ -21,9 +21,9 @@ void err_ret(constchar*fmt,...)
 * Fatal error related to a system call.
 * Print a message and terminate.
 */
-void err_sys(constchar*fmt,...)
+void err_sys(const char*fmt,...)
 {
-	va_listap;
+	va_list ap;
 
 	va_start(ap,fmt);
 	err_doit(1,errno,fmt,ap);
@@ -36,9 +36,9 @@ void err_sys(constchar*fmt,...)
 * Error code passed as explict parameter.
 * Print a message and terminate.
 */
-void err_exit(interror,constchar*fmt,...)
+void err_exit(int error,const char* fmt, ...)
 {
-	va_listap;
+	va_list ap;
 
 	va_start(ap,fmt);
 	err_doit(1,error,fmt,ap);
@@ -50,9 +50,9 @@ void err_exit(interror,constchar*fmt,...)
 * Fatal error related to a system call.
 * Print a message, dump core, and terminate.
 */
-void err_dump(constchar*fmt,...)
+void err_dump(const char* fmt,...)
 {
-	va_listap;
+	va_list ap;
 
 	va_start(ap,fmt);
 	err_doit(1,errno,fmt,ap);
@@ -65,9 +65,9 @@ void err_dump(constchar*fmt,...)
 * Nonfatal error unrelated to a system call.
 * Print a message and return.
 */
-void err_msg(constchar*fmt,...)
+void err_msg(const char* fmt,...)
 {
-	va_listap;
+	va_list ap;
 
 	va_start(ap,fmt);
 	err_doit(0,0,fmt,ap);
@@ -78,9 +78,9 @@ void err_msg(constchar*fmt,...)
 * Fatal error unrelated to a system call.
 * Print a message and terminate.
 */
-void err_quit(constchar*fmt,...)
+void err_quit(const char* fmt,...)
 {
-	va_listap;
+	va_list ap;
 
 	va_start(ap,fmt);
 	err_doit(0,0,fmt,ap);
@@ -92,9 +92,9 @@ void err_quit(constchar*fmt,...)
 * Print a message and return to caller.
 * Caller specifies "errnoflag".
 */
-static void err_doit(interrnoflag,interror,constchar*fmt,va_listap)
+static void err_doit(int errnoflag, int error, const char *fmt, va_list ap)
 {
-	charbuf[MAXLINE];
+	char buf[MAXLINE];
 	vsnprintf(buf,MAXLINE,fmt,ap);
 	if(errnoflag)
 		snprintf( buf+strlen(buf),MAXLINE-strlen(buf),": %s", strerror(error) );
