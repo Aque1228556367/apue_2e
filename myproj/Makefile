@@ -4,7 +4,7 @@
 # C programs using gcc.
 
 # 注意这里home路径不能用“~”
-WKDIR=/home/qqsprite/apue_2e_svn/apue_2e/trunk/src
+WKDIR=/home/sunrise/apue_2e_svn/apue_2e/trunk/src
 SRC=./fig
 CC		= gcc
 CXX		= g++
@@ -23,15 +23,17 @@ LIBAPUE		= $(WKDIR)/lib/libapue.a
 LIBS_REALEASE	=-L$(WKDIR)/lib -lapue
 LIBS_DEBUG		=-L$(WKDIR)/lib -lapueD
 
+FIG_NAME	=	fig1.5
+
 ####### Files
-OBJECTS	 = ./debug/fig1.3.o
+OBJECTS	 = ./debug/$(FIG_NAME).o
 TARGET   = ./bin/test
 
 # makefile 的首个目标视为默认目标，即只输入make就可执行的目标
 all:  $(TARGET)
 	echo "all"
 
-./debug/fig1.3.o : $(SRC)/fig1.3.c
+./debug/$(FIG_NAME).o : $(SRC)/$(FIG_NAME).c
 	$(CXX) -c  $(CXXFLAGS) $(INCPATH) -o $@ $< 
 	
 $(TARGET): $(OBJECTS)
