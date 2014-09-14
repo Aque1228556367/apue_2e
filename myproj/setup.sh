@@ -17,11 +17,11 @@ fi
 
 
 for i in $(ls ../src/fig/fig*)
-do  
+do
 	echo ${i}
 	filename=${i#*../src/fig/}
-    cp "$i" "./fig/$filename.c"
+	cp "$i" "./fig/$filename.c"
 	sed -i '1i\#include "myerr.h"' "./fig/$filename.c"
- done   
+done   
  
 # cp ../src/fig/fig1.3 ./fig/fig1.3.c
