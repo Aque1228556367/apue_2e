@@ -27,24 +27,15 @@ LIBS_DEBUG		=-L$(WKDIR)/lib -lapueD
 OBJECTS	 = ./debug/fig1.3.o
 TARGET   = ./bin/test
 
-./debug/fig1.3.o : $(SRC)/fig1.3.c
-	$(CXX) -c  $(CXXFLAGS) $(INCPATH) -o $@ $< 
-	echo "Build ./debug/fig1.3.o" 
-	
-# g++ -c -g -I/home/qqsprite/apue_2e_svn/apue_2e/trunk/src/include -o ./debug/fig1.3.o ./fig/fig1.3.c
-	
-
-####### Build rules
-echo:
-	echo hello
-
+# makefile 的首个目标视为默认目标，即只输入make就可执行的目标
 all:  $(TARGET)
 	echo "all"
+
+./debug/fig1.3.o : $(SRC)/fig1.3.c
+	$(CXX) -c  $(CXXFLAGS) $(INCPATH) -o $@ $< 
 	
 $(TARGET): $(OBJECTS)
-	echo "objects"
 	$(LINK) -o $(TARGET) $(OBJECTS) $(LIBS_REALEASE)
-	echo "link"
 
 link:
 	$(LINK) -o $(TARGET) $(OBJECTS) $(LIBS_REALEASE)
