@@ -15,7 +15,9 @@ int main(void)
 		if (buf[strlen(buf) - 1] == '\n')
 			buf[strlen(buf) - 1] = 0; /* replace newline with null */
 
-		if ((pid = fork()) < 0)
+		pid_t pid = fork();
+		printf("New Process : %d", pid);
+		if (pid < 0)
 		{
 			err_sys("fork error");
 		}
