@@ -1,3 +1,5 @@
+// 1.6 程序和进程
+// 程序清单 1-4 打印进程ID（P22）
 #include "myerr.h"
 #include "apue.h"
 

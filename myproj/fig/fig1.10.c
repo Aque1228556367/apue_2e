@@ -1,11 +1,13 @@
+// 1.9 信号
+// 程序清单 1-8 从标准输入读命令并执行（P28）
+// 注：在 eclipse 的 Console 窗口执行 Ctrl+C 并没有效果，但是在终端中可以
 #include "myerr.h"
 #include "apue.h"
 #include <sys/wait.h>
 
 static void	sig_int(int);		/* our signal-catching function */
 
-int
-main(void)
+int main(void)
 {
 	char	buf[MAXLINE];	/* from apue.h */
 	pid_t	pid;
@@ -14,14 +16,20 @@ main(void)
 	if (signal(SIGINT, sig_int) == SIG_ERR)
 		err_sys("signal error");
 
-	printf("%% ");	/* print prompt (printf requires %% to print %) */
-	while (fgets(buf, MAXLINE, stdin) != NULL) {
+	/* print prompt (printf requires %% to print %) */
+	printf("%% ");
+
+	while (fgets(buf, MAXLINE, stdin) != NULL)
+	{
 		if (buf[strlen(buf) - 1] == '\n')
 			buf[strlen(buf) - 1] = 0; /* replace newline with null */
 
-		if ((pid = fork()) < 0) {
+		if ((pid = fork()) < 0)
+		{
 			err_sys("fork error");
-		} else if (pid == 0) {		/* child */
+		}
+		else if (pid == 0)
+		{		/* child */
 			execlp(buf, buf, (char *)0);
 			err_ret("couldn't execute: %s", buf);
 			exit(127);
@@ -35,8 +43,8 @@ main(void)
 	exit(0);
 }
 
-void
-sig_int(int signo)
+void sig_int(int signo)
 {
+	printf("You Press Ctrl + C !\n");
 	printf("interrupt\n%% ");
 }

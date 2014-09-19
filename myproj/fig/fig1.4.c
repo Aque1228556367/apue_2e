@@ -3,8 +3,7 @@
 
 #define	BUFFSIZE	4096
 
-int
-main(void)
+int main(void)
 {
 	int		n;
 	char	buf[BUFFSIZE];

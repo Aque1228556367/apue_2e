@@ -1,3 +1,6 @@
+// 2.5.4 sysconf、pathconf 和 fpathconf 函数（P46）
+// 程序清单 2-1 构建C程序以打印所有得到支持的系统配置限制 (P48)
+// 注意：这个文件需要用 awk 构建
 #include "myerr.h"
 BEGIN	{
 	printf("#include \"apue.h\"\n")
