@@ -1,10 +1,11 @@
+// 3.9 I/O的效率
+// 程序清单 3-3 将标准输入复制到标准输出(P69)
 #include "myerr.h"
 #include "apue.h"
 
 #define	BUFFSIZE	4096
 
-int
-main(void)
+int main(void)
 {
 	int		n;
 	char	buf[BUFFSIZE];

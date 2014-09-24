@@ -1,9 +1,10 @@
+// 3.6 fcntl 函数
+// 程序清单 3-5 对一个文件描述符打开一个或多个文件状态标志(P79)
 #include "myerr.h"
 #include "apue.h"
 #include <fcntl.h>
 
-void
-set_fl(int fd, int flags) /* flags are file status flags to turn on */
+void set_fl(int fd, int flags) /* flags are file status flags to turn on */
 {
 	int		val;
 
