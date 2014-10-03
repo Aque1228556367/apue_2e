@@ -1,6 +1,11 @@
-参考：http://blog.sina.com.cn/s/blog_629437b201015x42.html
+﻿参考：http://blog.sina.com.cn/s/blog_629437b201015x42.html
+
+
 
 直接粘贴下面两行到命令行：
 
+
+
 gsettings set org.gnome.gedit.preferences.encodings auto-detected "['GB18030', 'GB2312', 'GBK', 'UTF-8', 'BIG5', 'CURRENT', 'UTF-16']"
+
 gsettings set org.gnome.gedit.preferences.encodings shown-in-menu "['GB18030', 'GB2312', 'GBK', 'UTF-8', 'BIG5', 'CURRENT', 'UTF-16']"
