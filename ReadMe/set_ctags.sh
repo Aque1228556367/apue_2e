@@ -4,8 +4,8 @@
 # File: ctags.sh
 # Author: zhankunlin
 # Date: 2011-11-30
-# Desc: ctags ctags ç”Ÿæˆç³»ç»Ÿåº“ï¼Œå­˜æ”¾äº ~/.vim/systags æ–‡ä»¶ä¸­
-# åŸé“¾æ¥ï¼šhttp://blog.csdn.net/zklth/article/details/7027798
+# Desc: ctags ctags Éú³ÉÏµÍ³¿â£¬´æ·ÅÓÚ ~/.vim/systags ÎÄ¼şÖĞ
+# Ô­Á´½Ó£ºhttp://blog.csdn.net/zklth/article/details/7027798
 #
 
 mkdir -p ~/.vim;
