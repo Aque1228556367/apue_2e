@@ -1,8 +1,9 @@
+// 1.5 输入和输出
+// 程序清单 1-3 用标准I/O将标准输入复制到标准输出
 #include "myerr.h"
 #include "apue.h"
 
-int
-main(void)
+int main(void)
 {
 	int	c;
 
