@@ -1,16 +1,20 @@
-// 1.4 æ–‡ä»¶å’Œç›®å½•(fig1.3)
+// Note : These notes use "gb2312/gbk" code-style and Unix code-style, 
+// if it show within messy code, Please Use UltraEdit/UEStudio transformate it .
+// if it show within "^M"( Ctrl + V, Ctrl + M ), Please Use "dos2unix" transformate it .
+
+// 1.4 ÎÄ¼şºÍÄ¿Â¼(fig1.3)
 
 // define in glibc src( for Unix )
 struct __dirstream
 {
-	int fd;                     /* File descriptor.  */
+	int fd;						/* File descriptor.  */
 
-	char *data;                 /* Directory block.  */
-	size_t allocation;          /* Space allocated for the block.  */
+	char *data;               /* Directory block.  Ä¿Â¼¿é */
+	size_t allocation;       /* Space allocated for the block.  */
 	size_t size;                /* Total valid data in the block.  */
-	size_t offset;              /* Current offset into the block.  */
+	size_t offset;             /* Current offset into the block.  */
 
-	off_t filepos;              /* Position of next entry to read.  */
+	off_t filepos;             /* Position of next entry to read.  */
 
 	__libc_lock_define (, lock) /* Mutex lock for this structure.  */
 };
@@ -19,49 +23,50 @@ struct __dirstream
 struct dirent
 {
 #ifndef __USE_FILE_OFFSET64
-    __ino_t d_ino;
-    __off_t d_off;
+    __ino_t d_ino;			/* inode number Ë÷Òı½ÚµãºÅ */
+    __off_t d_off;				/* offset to this dirent ÔÚÄ¿Â¼ÎÄ¼şÖĞµÄÆ«ÒÆ */
 #else
     __ino64_t d_ino;
     __off64_t d_off;
 #endif
-    unsigned short int d_reclen;
-    unsigned char d_type;
-    char d_name[256];		/* We must not include limits.h! */
+    unsigned short int d_reclen;			/* length of this d_name ÎÄ¼şÃû³¤ */
+    unsigned char d_type;					/* the type of d_name ÎÄ¼şÀàĞÍ */
+    char d_name[256];							/* file name (null-terminated) ÎÄ¼şÃû£¬×î³¤255×Ö·û */
+    													/* We must not include limits.h! */
 };
 
-// æ‰“å¼€ç›®å½•å¥æŸ„
+// ´ò¿ªÄ¿Â¼¾ä±ú
 DIR* opendir(const char* dirname);
 
-// è¯»ä¸€ä¸ªç›®å½•
+// ¶ÁÒ»¸öÄ¿Â¼
 struct dirent* readdir(DIR* dirp);
 
-// å…³é—­ç›®å½•å¥æŸ„(å…³é—­æˆåŠŸåˆ™è¿”å›0ï¼Œå¤±è´¥è¿”å›-1)
+// ¹Ø±ÕÄ¿Â¼¾ä±ú(¹Ø±Õ³É¹¦Ôò·µ»Ø0£¬Ê§°Ü·µ»Ø-1)
 int closedir(DIR* dirp);
 
 
-// 1.5 è¾“å…¥å’Œè¾“å‡º(fig1.4, fig1.5)
+// 1.5 ÊäÈëºÍÊä³ö(fig1.4, fig1.5)
 
 // Unix C :
-// æˆåŠŸè¿”å›è¯»å–çš„å­—èŠ‚æ•°ï¼Œå‡ºé”™è¿”å›-1å¹¶è®¾ç½®errnoï¼Œå¦‚æœåœ¨è°ƒreadä¹‹å‰å·²åˆ°è¾¾æ–‡ä»¶æœ«å°¾ï¼Œåˆ™è¿™æ¬¡readè¿”å›0
+// ³É¹¦·µ»Ø¶ÁÈ¡µÄ×Ö½ÚÊı£¬³ö´í·µ»Ø-1²¢ÉèÖÃerrno£¬Èç¹ûÔÚµ÷readÖ®Ç°ÒÑµ½´ïÎÄ¼şÄ©Î²£¬ÔòÕâ´Îread·µ»Ø0
 ssize_t read(int filedes, void* buf, unsigned int nbyte);
-// å°†æ•°æ®å†™å…¥å·²æ‰“å¼€çš„æ–‡ä»¶å†…
+// ½«Êı¾İĞ´ÈëÒÑ´ò¿ªµÄÎÄ¼şÄÚ
 ssize_t write (int fd, const void * buf, size_t count);
 
 // ANSI C :
-// ä»æµä¸­å–å­—ç¬¦.æ­¤å‡½æ•°è¢«ISO Cå£°æ˜ä¸ºä¸€ä¸ªå®ï¼Œæ‰€ä»¥åœ¨ç”¨æ—¶ä¸èƒ½å°†å…¶åšä¸ºå‡½æ•°æŒ‡é’ˆä¼ 
+// ´ÓÁ÷ÖĞÈ¡×Ö·û.´Ëº¯Êı±»ISO CÉùÃ÷ÎªÒ»¸öºê£¬ËùÒÔÔÚÓÃÊ±²»ÄÜ½«Æä×öÎªº¯ÊıÖ¸Õë´«
 // #define getc(_fp) _IO_getc (_fp)
 int getc(FILE *stream);
-// è¾“å‡ºä¸€å­—ç¬¦åˆ°æŒ‡å®šæµä¸­.æ­¤å‡½æ•°è¢«ISO Cå£°æ˜ä¸ºä¸€ä¸ªå®ï¼Œæ‰€ä»¥åœ¨ç”¨æ—¶ä¸èƒ½å°†å…¶åšä¸ºå‡½æ•°æŒ‡é’ˆä¼ 
+// Êä³öÒ»×Ö·ûµ½Ö¸¶¨Á÷ÖĞ.´Ëº¯Êı±»ISO CÉùÃ÷ÎªÒ»¸öºê£¬ËùÒÔÔÚÓÃÊ±²»ÄÜ½«Æä×öÎªº¯ÊıÖ¸Õë´«
 // #define putc(_ch, _fp) _IO_putc (_ch, _fp)
 int fputc(int ch,FILE*fp);
 
-// åœ¨è°ƒç”¨å„ç§è¾“å…¥è¾“å‡ºå‡½æ•°ï¼ˆå¦‚ putc.getc.fread.fwriteç­‰ï¼‰æ—¶ï¼Œ
-// å¦‚æœå‡ºç°é”™è¯¯ï¼Œé™¤äº†å‡½æ•°è¿”å›å€¼æœ‰æ‰€åæ˜ å¤–ï¼Œè¿˜å¯ä»¥ç”¨ferrorå‡½æ•°æ£€æŸ¥ã€‚
-// å®ƒçš„ä¸€èˆ¬è°ƒç”¨å½¢å¼ä¸º ferror(fp)ï¼›
-// å¦‚æœferrorè¿”å›å€¼ä¸º0ï¼ˆå‡ï¼‰ï¼Œè¡¨ç¤ºæœªå‡ºé”™ã€‚
-// å¦‚æœè¿”å›ä¸€ä¸ªéé›¶å€¼ï¼Œè¡¨ç¤ºå‡ºé”™ã€‚
-// åº”è¯¥æ³¨æ„ï¼Œå¯¹åŒä¸€ä¸ªæ–‡ä»¶ æ¯ä¸€æ¬¡è°ƒç”¨è¾“å…¥è¾“å‡ºå‡½æ•°ï¼Œå‡äº§ç”Ÿä¸€ä¸ªæ–°çš„ferrorå‡½ æ•°å€¼ï¼Œ
-// å› æ­¤ï¼Œåº”å½“åœ¨è°ƒç”¨ä¸€ä¸ªè¾“å…¥è¾“å‡ºå‡½æ•°åç«‹å³æ£€ æŸ¥ferrorå‡½æ•°çš„å€¼ï¼Œå¦åˆ™ä¿¡æ¯ä¼šä¸¢å¤±ã€‚
-// åœ¨æ‰§è¡Œfopenå‡½æ•°æ—¶ï¼Œferrorå‡½æ•°çš„åˆå§‹å€¼è‡ªåŠ¨ç½®ä¸º0ã€‚
+// ÔÚµ÷ÓÃ¸÷ÖÖÊäÈëÊä³öº¯Êı£¨Èç putc.getc.fread.fwriteµÈ£©Ê±£¬
+// Èç¹û³öÏÖ´íÎó£¬³ıÁËº¯Êı·µ»ØÖµÓĞËù·´Ó³Íâ£¬»¹¿ÉÒÔÓÃferrorº¯Êı¼ì²é¡£
+// ËüµÄÒ»°ãµ÷ÓÃĞÎÊ½Îª ferror(fp)£»
+// Èç¹ûferror·µ»ØÖµÎª0£¨¼Ù£©£¬±íÊ¾Î´³ö´í¡£
+// Èç¹û·µ»ØÒ»¸ö·ÇÁãÖµ£¬±íÊ¾³ö´í¡£
+// Ó¦¸Ã×¢Òâ£¬¶ÔÍ¬Ò»¸öÎÄ¼ş Ã¿Ò»´Îµ÷ÓÃÊäÈëÊä³öº¯Êı£¬¾ù²úÉúÒ»¸öĞÂµÄferrorº¯ ÊıÖµ£¬
+// Òò´Ë£¬Ó¦µ±ÔÚµ÷ÓÃÒ»¸öÊäÈëÊä³öº¯ÊıºóÁ¢¼´¼ì ²éferrorº¯ÊıµÄÖµ£¬·ñÔòĞÅÏ¢»á¶ªÊ§¡£
+// ÔÚÖ´ĞĞfopenº¯ÊıÊ±£¬ferrorº¯ÊıµÄ³õÊ¼Öµ×Ô¶¯ÖÃÎª0¡£
 int ferror (FILE *__stream);
