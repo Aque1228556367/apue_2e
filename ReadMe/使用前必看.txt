@@ -1,0 +1,4 @@
+(1)取得src路径下 systype.sh 的可执行权限：chmod +x systype.sh
+(2)Make.defines.linux 中把 WKDIR 改成 src 在你系统当前的路径
+(3)执行 make 生成 apue 的库
+(4)回到 myproj 路径下即可运行实例
