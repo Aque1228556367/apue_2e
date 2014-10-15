@@ -57,9 +57,19 @@ ssize_t write (int fd, const void * buf, size_t count);
 // 从流中取字符.此函数被ISO C声明为一个宏，所以在用时不能将其做为函数指针传
 // #define getc(_fp) _IO_getc (_fp)
 int getc(FILE *stream);
+
+//////////////////////////////////////////////////////////////////////////
+// Name : 	ferror
+// Type :	Linux C
+// Note :	检查文件流的错误
 // 输出一字符到指定流中.此函数被ISO C声明为一个宏，所以在用时不能将其做为函数指针传
 // #define putc(_ch, _fp) _IO_putc (_ch, _fp)
 int fputc(int ch,FILE*fp);
+
+//////////////////////////////////////////////////////////////////////////
+// Name : 	ferror
+// Type :	Linux C
+// Note :	检查文件流的错误
 
 // 在调用各种输入输出函数（如 putc.getc.fread.fwrite等）时，
 // 如果出现错误，除了函数返回值有所反映外，还可以用ferror函数检查。
@@ -70,3 +80,28 @@ int fputc(int ch,FILE*fp);
 // 因此，应当在调用一个输入输出函数后立即检 查ferror函数的值，否则信息会丢失。
 // 在执行fopen函数时，ferror函数的初始值自动置为0。
 int ferror (FILE *__stream);
+
+
+// 1.6 程序和进程(fig1.6, fig1.7)
+//////////////////////////////////////////////////////////////////////////
+// Name : 	getpid
+// Type :	ANSI C
+// Note :	取得进程识别码
+
+// Windows
+// Locate : process.h
+// Define : 
+_CRT_NONSTDC_DEPRECATE(_getpid) _CRTIMP int __cdecl getpid(void);
+ 
+// CentOS 5.8
+// Locate : /usr/include/unistd.h
+// Define :	
+extern __pid_t getpid (void) __THROW;
+
+// Ubuntu 12.04	—— locate : 
+// Locate : 
+// Define :	
+
+//////////////////////////////////////////////////////////////////////////
+
+// 1.7 出错处理
