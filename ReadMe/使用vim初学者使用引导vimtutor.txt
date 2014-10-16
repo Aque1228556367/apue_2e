@@ -1,0 +1,23 @@
+使用 locate vimtutor 查看所在路径
+vimtutor 所有语言版本路径：/usr/share/vim/vim72/tutor/
+供终端gb2312使用的文件：tutor.zh.euc
+供utf-8使用的文件：tutor.zh.utf-8（这个是繁体版）
+
+【查看简体中文版vimtutor 】
+来自：http://jewelsu.blog.163.com/blog/static/6576226201192710485827/
+
+在终端中输入vimtutor 默认是英文的，根据提示，如果要查看中文版需要用 vimtutor zh 启动，但是用这个启动之后是繁体中文版
+原因是在 /usr/share/vim/vim72/tutor/文件夹下有两个版本，一个是简体，另一个是繁体。
+其中 tutor.zh.euc 里面存储的是 gb2312 编码的简体中文教程，tutor.zh.utf-8 里面存储的是 utf-8 编码的繁体中文教程。系统默认打开的是后面的繁体版。
+终端的代码默认是utf-8，所以打开的是tutor.zh.utf-8.
+解决方法用
+$env LANG=zh_CN.GB2312  vimtutor
+执行
+这样执行之后，发现终端还算乱码，
+需要增加终端的代码集，方法为点击terminal--set character encoding--add and remove，增加gb10831，再次打开之后就是简体中文版的了
+
+另外一种方法是将简体中文版的文件转换成utf8的，方法为
+$iconv -f gb2312 -t utf8 /usr/share/vim/vim73/tutor/tutor.zh.euc -o ~/vimtutor.txt
+
+$vi ~/vimtutor.txt
+其中iconv是转换字符集的命令，将vimtutor.zh.euc 转换成utf-8并另存为 ~/vimtutor.txt
