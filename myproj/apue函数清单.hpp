@@ -53,24 +53,39 @@ ssize_t read(int filedes, void* buf, unsigned int nbyte);
 // 将数据写入已打开的文件内
 ssize_t write (int fd, const void * buf, size_t count);
 
+//////////////////////////////////////////////////////////////////////////
 // ANSI C :
 // 从流中取字符.此函数被ISO C声明为一个宏，所以在用时不能将其做为函数指针传
 // #define getc(_fp) _IO_getc (_fp)
 int getc(FILE *stream);
 
 //////////////////////////////////////////////////////////////////////////
-// Name : 	ferror
-// Type :	Linux C
+// Name : 	fputc
+// Type :	ANSI C
 // Note :	检查文件流的错误
 // 输出一字符到指定流中.此函数被ISO C声明为一个宏，所以在用时不能将其做为函数指针传
 // #define putc(_ch, _fp) _IO_putc (_ch, _fp)
 int fputc(int ch,FILE*fp);
 
 //////////////////////////////////////////////////////////////////////////
-// Name : 	ferror
-// Type :	Linux C
-// Note :	检查文件流的错误
+// Method :		ferror
+// Returns :		返回非0情况下表示流设置错误，成功返回0
+// Parameter :	指向标识流文件的对象指针
+// Type :			ANSI C
+// Note :			检查文件流的错误
+// URL : 			http://www.cplusplus.com/reference/cstdio/ferror/
 
+// Windows
+// Locate : 		VC/include/stdio.h
+// Define :
+_CRTIMP __checkReturn int __cdecl ferror(__in FILE * _File);
+
+// CentOS 5.8
+// Locate : 		/usr/include/stdio.h
+// Define :	
+extern int ferror (FILE *__stream) __THROW __wur;
+
+// 详细说明：
 // 在调用各种输入输出函数（如 putc.getc.fread.fwrite等）时，
 // 如果出现错误，除了函数返回值有所反映外，还可以用ferror函数检查。
 // 它的一般调用形式为 ferror(fp)；
