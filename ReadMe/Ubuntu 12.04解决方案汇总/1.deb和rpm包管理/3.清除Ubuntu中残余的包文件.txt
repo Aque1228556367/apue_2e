@@ -1,0 +1,12 @@
+参考：
+http://www.cnblogs.com/JamyWong/archive/2009/11/19/1606442.html
+
+命令：
+dpkg -l |grep ^rc|awk '{print $2}' |sudo xargs dpkg -P 
+
+若出现以下信息，则证明你的系统中没有残留的配置文件了，无须担心
+
+Type dpkg -Dhelp for a list of dpkg debug flag values;
+ Type dpkg --force-help for a list of forcing options;
+ Type dpkg-deb --help for help about manipulating *.deb files;
+ Type dpkg --license for copyright license and lack of warranty (GNU GPL) 
