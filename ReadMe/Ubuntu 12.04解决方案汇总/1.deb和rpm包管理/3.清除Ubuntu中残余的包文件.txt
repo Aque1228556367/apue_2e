@@ -1,10 +1,10 @@
-╡н©╪ё╨
+Е▐┌Х─┐О╪ 
 http://www.cnblogs.com/JamyWong/archive/2009/11/19/1606442.html
 
-цЭаНё╨
+Е▒╫Д╩╓О╪ 
 dpkg -l |grep ^rc|awk '{print $2}' |sudo xargs dpkg -P 
 
-хТЁЖожртобпео╒ё╛тРж╓цВдЦ╣до╣мЁжпц╩сп╡паТ╣деДжцнд╪Чакё╛нчпК╣ёпд
+Х▀╔Е┤╨Г▌╟Д╩╔Д╦▀Д©║Ф│╞О╪▄Е┬≥Х╞│Ф≤▌Д╫═Г └ГЁ╩Г╩÷Д╦╜Ф╡║Ф°┴Ф╝▀Г∙≥Г └И┘█Г╫╝Ф√┤Д╩╤Д╨├О╪▄Ф≈═И║╩Ф▀┘Е©┐
 
 Type dpkg -Dhelp for a list of dpkg debug flag values;
  Type dpkg --force-help for a list of forcing options;
