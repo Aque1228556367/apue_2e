@@ -1,11 +1,11 @@
+// 4.9 chmod 和 fchmod 函数
+// 程序清单 4-4 chmod函数实例(P96)
 #include "myerr.h"
 #include "apue.h"
 
-int
-main(void)
+int main(void)
 {
-	struct stat		statbuf;
-
+	struct stat	statbuf;
 	/* turn on set-group-ID and turn off group-execute */
 
 	if (stat("foo", &statbuf) < 0)
@@ -14,7 +14,6 @@ main(void)
 		err_sys("chmod error for foo");
 
 	/* set absolute mode to "rw-r--r--" */
-
 	if (chmod("bar", S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH) < 0)
 		err_sys("chmod error for bar");
 

@@ -1,5 +1,5 @@
 // 4.8 access 函数
-// 程序清单 4-2 access 函数实例
+// 程序清单 4-2 access 函数实例(P92)
 #include "myerr.h"
 #include "apue.h"
 #include <fcntl.h>
