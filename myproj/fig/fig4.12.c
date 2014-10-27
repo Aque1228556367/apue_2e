@@ -6,8 +6,8 @@
 int main(void)
 {
 	struct stat	statbuf;
-	/* turn on set-group-ID and turn off group-execute */
 
+	/* turn on set-group-ID and turn off group-execute */
 	if (stat("foo", &statbuf) < 0)
 		err_sys("stat error for foo");
 	if (chmod("foo", (statbuf.st_mode & ~S_IXGRP) | S_ISGID) < 0)
