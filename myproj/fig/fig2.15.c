@@ -6,6 +6,8 @@
 #include <errno.h>
 #include <limits.h>
 
+#include "fig2.15.h"
+
 #ifdef	PATH_MAX
 static int	pathmax = PATH_MAX;
 #else
@@ -19,7 +21,7 @@ static long	posix_version = 0;
 /* If PATH_MAX is indeterminate, no guarantee this is adequate */
 #define	PATH_MAX_GUESS	1024
 
-char * path_alloc(int *sizep) /* also return allocated size, if nonnull */
+char* path_alloc(int *sizep) /* also return allocated size, if nonnull */
 {
 	char	*ptr = NULL;
 	int	size;
@@ -56,9 +58,4 @@ char * path_alloc(int *sizep) /* also return allocated size, if nonnull */
 		*sizep = size;
 
 	return(ptr);
-}
-
-int main()
-{
-	return 0;
 }

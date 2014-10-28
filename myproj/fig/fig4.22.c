@@ -1,7 +1,12 @@
+// 4.21 读目录
+// 程序清单 4-7 递归降序遍历目录层次结构，并按文件类型计数(P113)
 #include "myerr.h"
 #include "apue.h"
 #include <dirent.h>
 #include <limits.h>
+
+#include "fig2.15.h"
+extern char* path_alloc(int *sizep);
 
 /* function type that is called for each filename */
 typedef	int	Myfunc(const char *, const struct stat *, int);
@@ -12,8 +17,7 @@ static int		dopath(Myfunc *);
 
 static long	nreg, ndir, nblk, nchr, nfifo, nslink, nsock, ntot;
 
-int
-main(int argc, char *argv[])
+int main(int argc, char *argv[])
 {
 	int		ret;
 
@@ -54,8 +58,8 @@ main(int argc, char *argv[])
 
 static char	*fullpath;		/* contains full pathname for every file */
 
-static int					/* we return whatever func() returns */
-myftw(char *pathname, Myfunc *func)
+/* we return whatever func() returns */
+static int myftw(char *pathname, Myfunc *func)
 {
 	int len;
 	fullpath = path_alloc(&len);	/* malloc's for PATH_MAX+1 bytes */
@@ -72,8 +76,8 @@ myftw(char *pathname, Myfunc *func)
  * call func(), and return.  For a directory, we call ourself
  * recursively for each name in the directory.
  */
-static int					/* we return whatever func() returns */
-dopath(Myfunc* func)
+/* we return whatever func() returns */
+static int dopath(Myfunc* func)
 {
 	struct stat		statbuf;
 	struct dirent	*dirp;
@@ -100,7 +104,8 @@ dopath(Myfunc* func)
 	if ((dp = opendir(fullpath)) == NULL)	/* can't read directory */
 		return(func(fullpath, &statbuf, FTW_DNR));
 
-	while ((dirp = readdir(dp)) != NULL) {
+	while ((dirp = readdir(dp)) != NULL)
+	{
 		if (strcmp(dirp->d_name, ".") == 0  ||
 		    strcmp(dirp->d_name, "..") == 0)
 				continue;		/* ignore dot and dot-dot */
@@ -118,12 +123,13 @@ dopath(Myfunc* func)
 	return(ret);
 }
 
-static int
-myfunc(const char *pathname, const struct stat *statptr, int type)
+static int myfunc(const char *pathname, const struct stat *statptr, int type)
 {
-	switch (type) {
+	switch (type)
+	{
 	case FTW_F:
-		switch (statptr->st_mode & S_IFMT) {
+		switch (statptr->st_mode & S_IFMT)
+		{
 		case S_IFREG:	nreg++;		break;
 		case S_IFBLK:	nblk++;		break;
 		case S_IFCHR:	nchr++;		break;
