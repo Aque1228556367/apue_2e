@@ -1,11 +1,12 @@
 // 4.21 读目录
 // 程序清单 4-7 递归降序遍历目录层次结构，并按文件类型计数(P113)
-#include "myerr.h"
+//#include "myerr.h"
 #include "apue.h"
-#include <dirent.h>
 #include <limits.h>
 
-#include "fig2.15.h"
+#include <dirent.h>
+
+//#include "fig2.15.h"
 extern char* path_alloc(int *sizep);
 
 /* function type that is called for each filename */

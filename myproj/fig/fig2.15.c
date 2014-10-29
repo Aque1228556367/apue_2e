@@ -1,12 +1,12 @@
 // 2.5.5 不确定的运行时限制
 // 1. 路径名
 // 程序清单 2-3 为路径名动态地分配空间(P53)
+
 #include "myerr.h"
 #include "apue.h"
 #include <errno.h>
 #include <limits.h>
 
-#include "fig2.15.h"
 
 #ifdef	PATH_MAX
 static int	pathmax = PATH_MAX;

@@ -16,17 +16,23 @@ CXXFLAGS 	= -g   -pipe -Werror -DENCODING_UTF8 -DCHARSET_SHOW_GBK
 
 ####### third party objects, that may be not need -g to make .o much smaller 
 CXXFLAGS_3RD = 
-INCPATH  	= -I$(WKDIR)/include -I/usr/inlclude 	
-LINK     	= g++
+INCPATH  	= -I$(WKDIR)/include -I$(SRC) -I/usr/inlclude 	
+LINK     	= gcc
 LIBAPUE		= $(WKDIR)/lib/libapue.a
 
 LIBS_REALEASE	=-L$(WKDIR)/lib -lapue
 LIBS_DEBUG		=-L$(WKDIR)/lib -lapueD
 
-FIG_NAME	=	fig2.16
+FIG_NAME	=	fig4.22
 
 ####### Files
 OBJECTS	 = ./debug/$(FIG_NAME).o
+
+# fig4.22 需要 fig2.15 支撑，注意 myerr.h 重复包含的问题
+ifeq ($(FIG_NAME),fig4.22)
+OBJECTS += ./debug/fig2.15.o
+endif
+
 TARGET   = ./bin/test
 
 # makefile 的首个目标视为默认目标，即只输入make就可执行的目标
@@ -34,7 +40,12 @@ all:  $(TARGET)
 	echo "all"
 
 ./debug/$(FIG_NAME).o : $(SRC)/$(FIG_NAME).c
-	$(CXX) -c  $(CXXFLAGS) $(INCPATH) -o $@ $< 
+	$(CC) -c  $(CXXFLAGS) $(INCPATH) -o $@ $< 
+
+ifeq ($(FIG_NAME),fig4.22)
+./debug/fig2.15.o :  $(SRC)/fig2.15.c
+	$(CC) -c  $(CXXFLAGS) $(INCPATH) -o $@ $< 
+endif
 	
 $(TARGET): $(OBJECTS)
 	$(LINK) -o $(TARGET) $(OBJECTS) $(LIBS_REALEASE)
