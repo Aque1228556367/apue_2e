@@ -5,6 +5,13 @@ char* strerror(int errnum);
 #include <stdio.h>
 void perror(const char* msg);
 
+// 2.5(P47)
+#include <unistd.h>	// Only for Unix
+// 若成功则返回相应值，若失败返回-1
+// See in fig2.15, fig2.16
+long sysconf(int name);
+long pathconf(const char* pathname, int name);
+long fpathof(int fields, int name);
 
 // 3.3(P62)
 #include <fcntl.h>
@@ -12,6 +19,7 @@ int open(const char* pathname, int oflag, ... /*mode_t mode*/);
 
 // 3.4(P64)
 #include <fcntl.h>
+// See in fig3.2
 int creat(const char* pathname, mode_t mode);
 
 // 3.5(P64)
@@ -20,14 +28,15 @@ int close(int fields);
 
 // 3.6(P64)
 #include <unistd.h>	// Only for Unix
+// See in fig3.1, fig3.2
 off_t lseek(int fields, off_t offset, int whence);
 
-// 3.7(P67)
+// 3.7(P67) and 3.8(P68)
+// See in fig1.4
 #include <unistd.h>	// Only for Unix
+// See in fig3.4
 ssize_t read(int fields, void* buf, size_t bytes);
-
-// 3.8(P68)
-#include <unistd.h>	// Only for Unix
+// See in fig3.2, fig3.4
 ssize_t write(int fields, const void* buf, size_t bytes);
 
 // 3.11(P73) 原子读写
@@ -63,20 +72,25 @@ int ioctl(int fields, int request, ...);
  * 不能通过除该指针外所有其他直接或间接的方式修改该对象的内容。
  */
 #include <sys/stat.h>
+// See in fig4.12, fig4.21
 int stat(const char* __restrict pathname, struct stat* __restrict buf);
 int fstat(int fields, struct stat* buf);
+// See in fig4.3, fig4.22
 int lstat(const char* __restrict pathname, struct stat* __restrict buf);
 
 // 4.7(P92) 权限控制
 #include <unistd.h>		// Only for Unix
+// See in fig4.8
 int access(const char* pathname, int mode);
 
 // 4.8(P93) 设置文件模式创建屏蔽字
 #include <sys/stat.h>
+// See in fig4.9
 mode_t umask(mode_t cmask);
 
 // 4.9(P95) 更改现有文件的访问权限
 #include <sys/stat.h>
+// See in fig4.12
 int chmod(const char* pathname, mode_t mode);
 int fchmod(int fields, mode_t mode);
 
@@ -94,6 +108,7 @@ int ftruncate(int fields, off_t length);
 // 4.15(P103) 文件连接(硬连接)
 #include <unistd.h>		// Only for Unix
 int link(const char *existingpath, const char *newpath);
+// See in fig4.16
 int unlink(const char *pathname);
 
 #include <stdio.h>
@@ -107,6 +122,7 @@ ssize_t readlink(const char* __restrict pathname, char* __restrict buf, size_t b
 
 // 4.19(P110) 文件的修改和访问时间
 #include <utime.h>		// Only for Unix
+// See in fig4.21
 int utime(const char * pathname, const struct utimbuf* times);
 
 struct utimbuf
@@ -123,6 +139,7 @@ int mkdir(const char* pathname, mode_t mode);
 int rmdir(const char* pathname);
 
 // 4.21(P112) 读目录
+// See in fig1.3, fig4.22
 #include <dirent.h>		// Only for Unix
 DIR* opendir(const char* pathname);
 
@@ -164,3 +181,38 @@ int fwide(FILE *fp, int mode);
 int setbuf(FILE* __restrict fp, char* __restrict buf);
 int setvbuf(FILE* __restrict fp, char* __restrict buf, int mode, size_t size);
 
+// 5.5(P126) 打开流 关闭流
+#include <stdio.h>
+FILE* fopen(const char* __restrict pathname, const char* __restrict type);
+FILE* freopen(const char* __restrict pathname, const char* __restrict type, FILE* __restrict fp);
+FILE* fdopen(int fields, const char* type);
+
+int fclose(FILE* fp);
+
+// 5.6(P129) 读和写流
+#include <stdio.h>
+// See in fig1.5
+
+// 若成功则返回下一个字符，若已到达文件尾或出错则返回EOF
+int getc(FILE* fp);
+int fgetc(FILE* fp);
+int getchar(void);
+
+// 若成功则返回c，若失败则返回EOF
+int putc(int c, FILE* fp);
+int fputc(int c, FILE* fp);
+int putchar(int c);
+
+
+// 区分到达文件尾还是出错：
+int ferror(FILE* fp);
+int feof(FILE* fp);
+
+// 清除 ferror 和 feof 标志位
+int clearerr(FILE* fp);
+
+
+// 从流中读取数据后，再压回流中
+int ungetc(int c, FILE* fp);
+
+// 5.7(P130)
