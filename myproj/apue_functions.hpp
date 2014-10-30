@@ -1,3 +1,12 @@
+// 参数说明：
+// int fields —— 文件描述符
+// 在UNIX、Linux的系统调用中，大量的系统调用都是依赖于文件描述符
+// 在非UNIX/Linux操作系统上(如Windows NT)，无法基于这一概念进行编程
+// 范围： 0 到 OPEN_MAX
+// 含义：是由无符号整数表示的句柄，进程使用它来标识打开的文件。
+//    文件描述符与包括相关信息（如文件的打开模式、文件的位置类型、文件的初始类型等）
+// 的文件对象相关联，这些信息被称作文件的上下文。
+
 // 1.4 (P25)
 #include <string.h>
 char* strerror(int errnum);
@@ -5,7 +14,7 @@ char* strerror(int errnum);
 #include <stdio.h>
 void perror(const char* msg);
 
-// 2.5(P47)
+// 2.5(P47) Unix OS Limit
 #include <unistd.h>	// Only for Unix
 // 若成功则返回相应值，若失败返回-1
 // See in fig2.15, fig2.16
@@ -52,11 +61,12 @@ int dup2(int fields, int fields2);
 // 3.13(P75) 将缓存中的信息写入磁盘，保证文件和高速缓存内容一致
 #include <unistd.h>	// Only for Unix
 int fsync(int fields);
-int fdatasync(int fields);
+int fdatasync(int fields);// Only for Linux
 void sync(void);
 
 // 3.14(P76) 改变已打开的文件性质
 #include <fcntl.h>
+// See in fig3.10
 int fcntl(int fields, int cmd /* , int args .. */);
 
 // 3.15(P81) 其它对I/O通道进行管理的方法
