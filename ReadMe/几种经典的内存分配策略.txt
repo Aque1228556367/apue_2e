@@ -1,0 +1,54 @@
+dlmalloc(DougLea Malloc)
+【主页】
+http://g.oswego.edu/dl/html/malloc.html
+【下载地址】
+ftp://g.oswego.edu/pub/misc/malloc.c
+ftp://g.oswego.edu/pub/misc/malloc.h
+【说明】Doug Lea 从1987年开始编写的经典内存分配器，注意它不是多线程的
+【用例】Android bionic C
+【资料】
+【多线程支持】否
+
+nedmalloc
+【主页】http://www.nedprod.com/programs/portable/nedmalloc/
+【下载地址】https://github.com/ned14/nedmalloc
+【说明】
+作者 Niall Douglas，一个可选的malloc内存分配的实现,
+主要是适应多线程无锁操作,基于 dlmalloc 2.8.3 
+【用例】Ogre3D
+【资料】
+【多线程支持】是
+
+
+ptmalloc
+【主页】http://www.malloc.de/en/
+【下载地址】在主页的链接上
+【说明】dlmalloc 的经典变形之一，glibc内存管理器的实现
+【用例】Linux
+【资料】
+【多线程支持】是
+
+tcmalloc（下载地址被天朝墙了）
+【主页】http://goog-perftools.sourceforge.net/doc/tcmalloc.html 
+【下载地址】http://google-perftools.googlecode.com/files/google-perftools-1.8.3.tar.gz 
+【说明】
+Google写的，用于优化C++写的多线程应用，比glibc 2.3的malloc快。
+这个模块可以用来让MySQL在高并发下内存占用更加稳定
+【用例】safari、chrome
+【资料】http://dirlt.com/tcmalloc.html
+【多线程支持】是
+
+jemalloc
+【主页】http://www.canonware.com/jemalloc/
+【下载地址】http://www.canonware.com/jemalloc/download.html
+【说明】
+Jason Evans，一个 FreeBSD 很有名的开发人员，在2006年为提高低性能的malloc而写的jemalloc
+认为phkmalloc（FreeBSD’s previous malloc implementation by Kamp (1998)）
+没有考虑多处理器的情况，因此在多线程并发下性能低下(事实如此)，
+而jemalloc适合多线程下内存分配管理。
+
+firefox2中出现了内存碎片问题之后，在firefox3中使用了jemalloc
+SkyNet的作者云风，为了解决Redis的内存碎片问题，而引入了jemalloc
+【用例】FreeBSD libc allocator in 2005、SkyNet、firefox3
+【资料】http://blog.csdn.net/zgl_dm/article/details/8562005
+【多线程支持】是
