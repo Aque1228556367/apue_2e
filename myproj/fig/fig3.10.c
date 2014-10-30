@@ -63,3 +63,17 @@ int main(int argc, char *argv[])
 // ./test 1 > temp.foo
 // ./test 2 2>>temp.foo
 // ./test 5 5<>temp.foo
+
+// 注：1、2、5 都是文件描述符，数字1、2、3分别表示标准输入、标准输出和标准出错，
+// 此三个文件描述符为系统预留，其它皆为自定义文件描述符，最大不得超过 OPEN_MAX
+
+// <unistd.h>
+/* Standard file descriptors.  */
+// #define	STDIN_FILENO	0	/* Standard input. */
+// #define	STDOUT_FILENO	1	/* Standard output.*/
+// #define	STDERR_FILENO	2	/* Standard error output.*/
+
+// 关于重定向和文件描述符，可参考：
+// http://blog.csdn.net/runboying/article/details/7045797
+// http://www1.huachu.com.cn/read/readbookinfo.asp?sectionid=1000006953
+
