@@ -8,27 +8,43 @@
 int main(int argc, char *argv[])
 {
 	if (argc != 2)
-		err_quit("usage: a.out <descriptor#>");
+		err_quit("usage: a.out <descriptor#>\n");
 
 	// 取得 argv[1] 对应文件的文件状态标志位
-	int val = fcntl(atoi(argv[1]), F_GETFL, 0);
+	int tFields = atoi(argv[1]);
+	int val = fcntl(tFields, F_GETFL, 0);
 	if (val < 0)
-		err_sys("fcntl error for fd %d", atoi(argv[1]));
+		err_sys("fcntl error for fd %d\n", atoi(argv[1]));
 
+	switch(tFields)
+	{
+	case 0:
+		printf("File Descriptor : %d is stdin\n", tFields);
+		break;
+	case 1:
+		printf("File Descriptor : %d is stdout\n", tFields);
+		break;
+	case 2:
+		printf("File Descriptor : %d is stderr\n", tFields);
+		break;
+	default:
+		printf("Other unOS File Descriptor : %d\n", tFields);
+		break;
+	}
 	// O_ACCMODE : 操作时，用于取出 val 的低2位
 	// 注意：O_RDONLY、O_WRONLY、O_RDWR 三者具有互斥性，三者的标志位不能包含在一起
 	switch (val & O_ACCMODE)
 	{
 	case O_RDONLY:
-		printf("read only");
+		printf("Get file status flags : read only");
 		break;
 
 	case O_WRONLY:
-		printf("write only");
+		printf("Get file status flags : write only");
 		break;
 
 	case O_RDWR:
-		printf("read write");
+		printf("Get file status flags : read write");
 		break;
 
 	default:
@@ -60,12 +76,20 @@ int main(int argc, char *argv[])
 }
 
 // 教材中用到的例子：
+// ./test 0 < /dev/tty
 // ./test 1 > temp.foo
 // ./test 2 2>>temp.foo
 // ./test 5 5<>temp.foo
 
 // 注：1、2、5 都是文件描述符，数字1、2、3分别表示标准输入、标准输出和标准出错，
 // 此三个文件描述符为系统预留，其它皆为自定义文件描述符，最大不得超过 OPEN_MAX
+
+// ./test 0 < /dev/tty 表示重定向终端到输入流，和 ./test 0 输出结果并无二致
+// printf() 函数将格式化数据写到标准输出(P136)，> 命令会把所有 printf 的内容
+// 重定向到 temp.foo 文件中, > 会覆盖之前的文件内容，而 >> 则可以在原来的内容上追加
+// 5<>temp.foo 表示：为了读写 temp.foo，把 temp.foo 打开，并且将文件描述符5分配给它
+// 并不会把输出流内容写到 temp.foo 文件上
+// 所以文件描述符5的文件标志位是读写（以读写标志位模式打开的）
 
 // <unistd.h>
 /* Standard file descriptors.  */
