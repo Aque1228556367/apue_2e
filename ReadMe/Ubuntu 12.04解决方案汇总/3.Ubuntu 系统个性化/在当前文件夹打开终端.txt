@@ -1,0 +1,4 @@
+sudo apt-get install nautilus-open-terminal
+然后
+nautilus -q
+随意打开一个文件夹，即可右键打开当前文件夹下的终端

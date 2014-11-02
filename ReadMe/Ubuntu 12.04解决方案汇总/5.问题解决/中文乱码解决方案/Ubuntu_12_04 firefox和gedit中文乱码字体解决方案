@@ -1,0 +1,10 @@
+ubuntu12.04中firefox部分网页中文乱码的解决：
+问题原因：Firefox允许页面选择字体，这导致有些页面（如新浪news）乱码，有些页面正常。
+
+解决办法是： 编辑 -> 首选项 -> 内容 -> 字体 -> 高级 -> 允许页面选择显示字体而无需使用上面的设置，此方框取消勾选。
+
+Ubuntu 12.04 gedit中文乱码解决：
+gsettings set org.gnome.gedit.preferences.encodings auto-detected "['GB18030', 'GB2312', 'GBK', 'UTF-8', 'BIG5', 'CURRENT', 'UTF-16']"
+
+Ubuntu 12.04 vi(m) 中文乱码解决：
+***

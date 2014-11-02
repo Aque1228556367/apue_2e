@@ -1,0 +1,71 @@
+参照“参考.txt”我对自己的 Ubuntu 12.04 进行了分辨率定制
+由于我采用的是虚拟机方式，故我的显卡设备为 Vitural1 而非 VGA：
+
+【查看Linux 主机的硬件配备：lspci 】
+$ lspci | grep VGA
+00:0f.0 VGA compatible controller: VMware SVGA II Adapter
+$ lspci | grep Virtual
+00:07.7 System peripheral: VMware Virtual Machine Communication Interface (rev 10)
+
+然后用 xrandr 命令查看当前系统支持的显示器分辨率：
+
+$ xrandr
+Screen 0: minimum 1 x 1, current 1716 x 773, maximum 8192 x 8192
+Virtual1 connected primary 1716x773+0+0 (normal left inverted right x axis y axis) 0mm x 0mm
+   1716x773       60.0*+
+   2560x1600      60.0  
+   1920x1440      60.0  
+   1856x1392      60.0  
+   1792x1344      60.0  
+   1920x1200      59.9  
+   1600x1200      60.0  
+   1680x1050      60.0  
+   1400x1050      60.0  
+   1280x1024      60.0  
+   1440x900       59.9  
+   1280x960       60.0  
+   1360x768       60.0  
+   1280x800       59.8  
+   1152x864       75.0  
+   1280x768       59.9  
+   1024x768       60.0  
+   800x600        60.3  
+   640x480        59.9  
+Virtual2 disconnected (normal left inverted right x axis y axis)
+Virtual3 disconnected (normal left inverted right x axis y axis)
+Virtual4 disconnected (normal left inverted right x axis y axis)
+Virtual5 disconnected (normal left inverted right x axis y axis)
+Virtual6 disconnected (normal left inverted right x axis y axis)
+Virtual7 disconnected (normal left inverted right x axis y axis)
+Virtual8 disconnected (normal left inverted right x axis y axis)
+
+由此可见，带星号的 1716x773 即为当前 Ubuntu 使用的分辨率
+由于我的 Windows8 支持的最大分辨率（也是目前使用的分辨率）为 1920×1080
+由于显示的列表中并没有这个分辨率，故需要手动增加一个：
+
+【增加一个你想要的分辨率】
+$ cvt 1920 1080
+# 1920x1080 59.96 Hz (CVT 2.07M9) hsync: 67.16 kHz; pclk: 173.00 MHz
+Modeline "1920x1080_60.00"  173.00  1920 2048 2248 2576  1080 1083 1088 1120 -hsync +vsync
+
+此时用 xrandr 查看，这个分辨率并未加入到列表，因为 cvt 只是生成这个模式的格式，真正的操作还未进行
+此时用 xrandr --newmode 生成 xrandr 的新模式，直接复制cvt结果中 Modeline后的内容：
+
+$ xrandr --newmode "1920x1080_60.00"  173.00  1920 2048 2248 2576  1080 1083 1088 1120 -hsync +vsync
+此时重新执行 xrandr 发现在原来的基础上增加了三行输出：
+
+1920x1080_60.00 (0x188)  173.0MHz
+        h: width  1920 start 2048 end 2248 total 2576 skew    0 clock   67.2KHz
+        v: height 1080 start 1083 end 1088 total 1120           clock   60.0Hz
+
+此时只是增加了一个 xrandr 的新模式，还没把它加入到 xrandr 模式列表中（确切的说是当前使用的设备
+ Virtual1 的模式列表中），用 xrandr --addmode 【设备名】【分辨率名称】添加进去：
+$ xrandr --addmode Virtual1 "1920x1080_60.00"
+
+此时重新执行 xrandr 发现 Virtual1 设备的最后多了一行：
+1920x1080_60.00   60.0 
+
+应用这个分辨率即可生效：
+xrandr --output Virtual1 --mode "1920x1080_60.00"
+
+此时即可看到分辨率发生的变化

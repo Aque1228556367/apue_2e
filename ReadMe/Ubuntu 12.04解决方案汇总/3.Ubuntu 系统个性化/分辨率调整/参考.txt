@@ -1,0 +1,50 @@
+参考：
+http://www.2cto.com/os/201202/121012.html
+
+我的一台11寸上网本，装的ubuntu。最近外接了一个19寸显示器。分辨率最多只能是1024x768。显示器设置里显示“未知”显示器。
+ 用下面的命令可以看到显卡的信息：
+$ lspci | grep VGA
+ 00:02.0 VGA compatible controller: Intel Corporation Mobile 945GME Express Integrated Graphics Controller (rev 03)
+  
+我一直以为是显卡驱动没装好，于是下载了intel显卡linux驱动的源码，并花了几天时间来编译（期间安装了N多它所依赖的包），最终还是没能装成功，还把Xorg搞挂了。无奈还重装了系统。其实intel集成显卡的驱动已经装好了，而且用命令sudo apt-get install xserver-xorg-video-intel也可以安装。
+ 之后还在网上看到修改/etc/X11/xorg.conf之类的解决方案。我直接头大了。
+ 最后还是找到了解决方案：xrandr命令。
+ 首先，直接运行xrandr查看下分辨率的情况：
+$ xrandr
+ Screen 0: minimum 320 x 200, current 1280 x 1024, maximum 4096 x 4096
+ LVDS1 connected (normal left inverted right x axis y axis)
+    1024x600       60.0 +
+    800x600        60.3     56.2 
+    640x480        59.9 
+ VGA1 connected 1280x1024+0+0 (normal left inverted right x axis y axis) 0mm x 0mm
+    1024x768       60.0 *
+    800x600        60.3     56.2 
+    848x480        60.0 
+    640x480        59.9
+标星号的那行就是我正在使用的分辨率。
+ 下面用cvt命令生成一个modeline，为后续添加分辨率作准备：
+$ cvt 1440 900
+ # 1440x900 59.89 Hz (CVT 1.30MA) hsync: 55.93 kHz; pclk: 106.50 MHz
+ Modeline "1440x900_60.00"  106.50  1440 1528 1672 1904  900 903 909 934 -hsync +vsync
+再运行xrandr --newmode来创建一个分辨率模式，使用“Modeline”后的内容（--rmmode删除这个模式）：
+$ xrandr --newmode "1440x900_60.00"  106.50  1440 1528 1672 1904  900 903 909 934 -hsync +vsync
+接着用xrandr --addmode把这个模式添加到显示器上（--delmode把这个模式从该显示器上移除）：
+$ xrandr --addmode VGA1 "1440x900_60.00"
+最后是应用这个模式：
+$ xrandr --output VGA1 --mode "1440x900_60.00"
+到此，我的屏幕看上去就清爽多了。
+ 用xrandr查看一下：
+$ xrandr
+ Screen 0: minimum 320 x 200, current 1440 x 900, maximum 4096 x 4096
+ LVDS1 connected (normal left inverted right x axis y axis)
+    1024x600       60.0 +
+    800x600        60.3     56.2 
+    640x480        59.9 
+ VGA1 connected 1440x900+0+0 (normal left inverted right x axis y axis) 0mm x 0mm
+    1024x768       60.0 
+    800x600        60.3     56.2 
+    848x480        60.0 
+    640x480        59.9 
+    1440x900_60.00   59.9*
+设置完后我的屏幕向左偏出了约5个像素，直接在显示器（硬件）上调就可以了。
+ 参考：https://wiki.ubuntu.com/X/Config/Resolution 

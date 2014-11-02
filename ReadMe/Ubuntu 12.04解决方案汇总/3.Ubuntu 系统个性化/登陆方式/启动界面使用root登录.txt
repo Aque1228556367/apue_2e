@@ -1,0 +1,43 @@
+帖子来源：
+http://liuzhigong.blog.163.com/blog/static/178272375201123073542802/
+
+一、
+     因为当你需要 root 的权限时，使用 sudo 便可以了。如果你实在需要在 Ubuntu 中启用 root 帐号的话，那么不妨执行下面的操作：
+
+  1.重新设置 root 的密码：
+
+  $sudo passwd root  #按照提示输入两次新的密码，并加以确认。
+
+  2.启用root用户登录：
+
+  在系统-系统管理-登录界面里启用登录时显示用户列表，重启系统，登录时用户选择Other，然后输入root，输入密码，即可进入
+
+  之后，重启系统时，就可以用 root 登录了。如果你想要禁用 root 帐号，则执行下列命令：
+
+  $sudo passwd -l root
+
+
+二、
+Ubuntu 中的 root 帐号默认是被禁用了的。在这种情况之下，如果你想要使用 root 的权限来干些事情，就需要 sudo 指令。对某些朋友来说，他们可能需要激活 Ubuntu 中的 root 帐号。
+
+在 Ubuntu 中激活 root 帐号的过程如下：
+
+  1. 在终端执行 sudo passwd root 指令后，系统将会提示你设置一个新的 root 帐号密码。
+  2. 点击 System -> Preferences -> Login Window 菜单，并切换到 Security 选项页，然后选中其下的“Allow local system administrator login”选项。
+
+执行上述两步后，你便可以使用 root 帐号登录 Ubuntu 系统了。
+
+如果要再次禁用 root 帐号，那么可以执行 sudo passwd -l root。 
+
+
+三、如果一直想一直用root也可以"sudo -s"。
+
+四、Ubuntu12.04LTS 启动界面使用root登录
+Ubuntu12.04LTS安装完成后启动界面只有一个普通用户和Guest用户登录的，没有可以输入用户名的地方，怎么办呢？只需做如下修改即可：
+a) 编辑配置文件:  sudo gedit /etc/lightdm/lightdm.conf
+b) 增加一行：greeter-show-manual-login=true
+c) 再增加一行：allow-guest=false
+
+zhangchx 注：
+如果第四步执行完重启后，输入root密码提示失败，则以普通用户身份登陆，然后按第二步重新修改
+root 密码，注销，重新输入密码即可。

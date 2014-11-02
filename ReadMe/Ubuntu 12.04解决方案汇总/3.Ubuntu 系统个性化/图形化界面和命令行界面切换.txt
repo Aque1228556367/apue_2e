@@ -1,0 +1,15 @@
+Ctrl+Alt+F1：进入命令行模式（完全由命令行控制）
+
+Ctrl+Alt+F7：返回图形界面
+
+
+
+在图形界面下打开终端（类型Windows下的cmd）
+
+Alt+F2 进入“运行”
+然后输入：gnome-terminal
+
+
+
+或者直接使用快捷键呼出：Ctrl+Alt+T
+

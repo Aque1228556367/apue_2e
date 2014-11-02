@@ -1,0 +1,2 @@
+Ubuntu root登录没有声音这个问题的根本原因是使用root登录后pulseaudio没有启动。将root加到pulse-access组：sudo usermod -a -G pulse-access root
+然后修改配置文件/etc/default/pulseaudio，将PULSEAUDIO_SYSTEM_START设为1，重启后就能听到登录的声音了。可是，这样默认用户登录的时候就没有声音了，可以通过将默认用户添加到pulse-access组的方式，使得所有的用户都有声音。

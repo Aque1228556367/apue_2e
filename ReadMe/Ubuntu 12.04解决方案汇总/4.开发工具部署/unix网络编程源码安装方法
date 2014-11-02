@@ -1,0 +1,335 @@
+参考：
+http://blog.chinaunix.net/uid-26611973-id-3152668.html
+http://blog.csdn.net/y199728652/article/details/5718909
+http://blog.sina.com.cn/s/blog_70b6ff9601013vjn.html
+http://www.360doc.com/content/12/0214/08/168576_186468911.shtml
+http://www.360doc.com/content/12/0214/08/168576_186468996.shtml
+http://bbs.chinaunix.net/thread-2172747-1-1.html
+
+自己总结：
+
+在开始前，需要开启 daytime服务：
+sudo aptitude install xinetd
+然后打开 /etc/xinetd.d 下的daytime和echo文件，把disable权限均改为no
+然后重新执行 sudo invoke-rc.d xinetd reload 重新加载这两个文件
+
+1.执行configure文件生成config.h文件，并进行修改
+
+一开始需要进到目录下执行 ./configure 命令
+但是报错：bash: ./configure: Permission denied
+于是重新执行 chmod 755 ./configure
+再重新执行 ./configure
+出现：
+loading cache ./config.cache
+configure: error: can not run ./config.sub
+
+重复这个步骤：chmod 755 ./config.sub，出现：
+Configuration name missing.
+Usage: ./config.sub CPU-MFR-OPSYS
+or     ./config.sub ALIAS
+where ALIAS is a recognized configuration type.
+
+重新执行 ./configure
+loading cache ./config.cache
+checking host system type... ./configure: 1: ./configure: ./config.guess: Permission denied
+configure: error: can not guess host type; you must specify one
+
+chmod 755 ./config.guess 一次后，重新./configure
+出现：
+loading cache ./config.cache
+checking host system type... i686-pc-linux-gnu
+checking for gcc... gcc
+checking whether the C compiler (gcc  ) works... yes
+checking whether the C compiler (gcc  ) is a cross-compiler... no
+checking whether we are using GNU C... yes
+checking whether gcc accepts -g... yes
+checking for ranlib... ranlib
+checking for pthread_create in -lpthread... yes
+checking for t_open in -lnsl... no
+checking for socket in -lsocket... no
+checking for /usr/local/bind/lib/libbind.a... no
+checking for /home/sunrise/libbind.a... no
+checking for /home/sunrise/libresolv.a... no
+checking for res_init in -lresolv... no
+checking for t_open in -lxti... no
+checking for /home/sunrise/libunp.a... no
+checking for /home/sunrise/libunpxti.a... no
+checking how to run the C preprocessor... gcc -E
+checking for ANSI C header files... yes
+checking for sys/types.h... yes
+checking for sys/socket.h... yes
+checking for sys/time.h... yes
+checking for time.h... yes
+checking for netinet/in.h... yes
+checking for arpa/inet.h... yes
+checking for errno.h... yes
+checking for fcntl.h... yes
+checking for netdb.h... yes
+checking for signal.h... yes
+checking for stdio.h... yes
+checking for stdlib.h... yes
+checking for string.h... yes
+checking for sys/stat.h... yes
+checking for sys/uio.h... yes
+checking for unistd.h... yes
+checking for sys/wait.h... yes
+checking for sys/un.h... yes
+checking for sys/select.h... yes
+checking for poll.h... yes
+checking for strings.h... yes
+checking for sys/ioctl.h... yes
+checking for sys/filio.h... no
+checking for sys/sockio.h... no
+checking for pthread.h... yes
+checking for sys/sysctl.h... yes
+checking for poll.h... (cached) yes
+checking for xti.h... no
+checking for xti_inet.h... no
+checking for netconfig.h... no
+checking for netdir.h... no
+checking for stropts.h... yes
+checking whether time.h and sys/time.h may both be included... yes
+checking if uint8_t defined... yes
+checking if int16_t defined... yes
+checking if uint16_t defined... yes
+checking if int32_t defined... yes
+checking if uint32_t defined... yes
+checking if size_t defined... yes
+checking if ssize_t defined... yes
+checking if socklen_t defined... yes
+checking if sa_family_t defined... yes
+checking if t_scalar_t defined... no
+checking if t_uscalar_t defined... yes
+checking if sockaddr{} has sa_len member... no
+checking if msghdr{} has msg_control member... yes
+checking for getaddrinfo function prototype in netdb.h... yes
+checking for getnameinfo function prototype in netdb.h... yes
+checking for gethostname function prototype in unistd.h... yes
+checking for getrusage function prototype in sys/resource.h... yes
+checking for hstrerror function prototype in netdb.h... yes
+checking for if_nametoindex function prototype in net/if.h... yes
+checking for inet_aton function prototype in arpa/inet.h... yes
+checking for inet_pton function prototype in arpa/inet.h... yes
+checking for isfdtype function prototype in sys/stat.h... no
+checking for pselect function prototype in sys/select.h... yes
+checking for snprintf function prototype in stdio.h... yes
+checking for sockatmark function prototype in sys/socket.h... yes
+checking for addrinfo{}... yes
+checking for if_nameindex{}... yes
+checking for sockaddr_dl{}... no
+checking for timespec{}... yes
+checking for /dev/tcp... no
+checking for /dev/xti/tcp... no
+checking for /dev/streams/xtiso/tcp... no
+checking for bzero... yes
+checking for getaddrinfo... yes
+checking for gethostname... yes
+checking for gethostbyname2... yes
+checking for gethostbyname_r... yes
+checking for getnameinfo... yes
+checking for hstrerror... yes
+checking for if_nametoindex... yes
+checking for inet_aton... yes
+checking for inet_pton... yes
+checking for isfdtype... yes
+checking for poll... yes
+checking for pselect... yes
+checking for snprintf... yes
+checking for sockatmark... yes
+checking for vsnprintf... yes
+checking for IPv4 support... yes
+checking for IPv6 support... yes
+checking for Unix domain sockets... yes
+checking for multicast support... yes
+checking for -I/home/sunrise/doc/unp2ev1/src/include... no
+updating cache ./config.cache
+creating ./config.status
+creating Makefile
+creating Make.defines
+creating config.h
+
+生成了 config.h
+按照 http://blog.sina.com.cn/s/blog_70b6ff9601013vjn.html 
+帖子，修改了 config.h 的内容
+
+2.到lib下make，生成lib下的libunp.a文件
+cd lib 后，make
+unp.h:114:8: error: redefinition of ‘struct in_pktinfo’
+
+参考帖子 http://blog.csdn.net/a649518776/article/details/6724121
+的解决办法：
+结构in_pktinfo已经包含在标准头文件bits/in.h中了, 它又通过 netinet/in.h 在unp.h中被包括进来. 只要将 unp.h （lib下）中的结构定义comment out注释掉就行了. 
+
+注释掉之后重新make
+gcc -g -O2 -D_REENTRANT -Wall   -c -o connect_nonb.o connect_nonb.c
+gcc -g -O2 -D_REENTRANT -Wall   -c -o connect_timeo.o connect_timeo.c
+gcc -g -O2 -D_REENTRANT -Wall   -c -o daemon_inetd.o daemon_inetd.c
+gcc -g -O2 -D_REENTRANT -Wall   -c -o daemon_init.o daemon_init.c
+daemon_init.c: In function ‘daemon_init’:
+daemon_init.c:27:7: warning: ignoring return value of ‘chdir’, declared with attribute warn_unused_result [-Wunused-result]
+gcc -g -O2 -D_REENTRANT -Wall   -c -o dg_cli.o dg_cli.c
+gcc -g -O2 -D_REENTRANT -Wall   -c -o dg_echo.o dg_echo.c
+gcc -g -O2 -D_REENTRANT -Wall   -c -o error.o error.c
+error.c: In function ‘err_doit’:
+error.c:102:3: warning: format not a string literal and no format arguments [-Wformat-security]
+gcc -g -O2 -D_REENTRANT -Wall   -c -o get_ifi_info.o get_ifi_info.c
+gcc -g -O2 -D_REENTRANT -Wall   -c -o gf_time.o gf_time.c
+gcc -g -O2 -D_REENTRANT -Wall   -c -o host_serv.o host_serv.c
+gcc -g -O2 -D_REENTRANT -Wall   -c -o mcast_leave.o mcast_leave.c
+gcc -g -O2 -D_REENTRANT -Wall   -c -o mcast_join.o mcast_join.c
+mcast_join.c: In function ‘mcast_join’:
+mcast_join.c:51:11: warning: suggest explicit braces to avoid ambiguous ‘else’ [-Wparentheses]
+gcc -g -O2 -D_REENTRANT -Wall   -c -o mcast_get_if.o mcast_get_if.c
+gcc -g -O2 -D_REENTRANT -Wall   -c -o mcast_get_loop.o mcast_get_loop.c
+gcc -g -O2 -D_REENTRANT -Wall   -c -o mcast_get_ttl.o mcast_get_ttl.c
+gcc -g -O2 -D_REENTRANT -Wall   -c -o mcast_set_if.o mcast_set_if.c
+gcc -g -O2 -D_REENTRANT -Wall   -c -o mcast_set_loop.o mcast_set_loop.c
+gcc -g -O2 -D_REENTRANT -Wall   -c -o mcast_set_ttl.o mcast_set_ttl.c
+gcc -g -O2 -D_REENTRANT -Wall   -c -o my_addrs.o my_addrs.c
+gcc -g -O2 -D_REENTRANT -Wall   -c -o read_fd.o read_fd.c
+read_fd.c: In function ‘read_fd’:
+read_fd.c:44:3: warning: dereferencing type-punned pointer will break strict-aliasing rules [-Wstrict-aliasing]
+read_fd.c:10:9: warning: unused variable ‘newfd’ [-Wunused-variable]
+gcc -g -O2 -D_REENTRANT -Wall   -c -o readline.o readline.c
+gcc -g -O2 -D_REENTRANT -Wall   -c -o readn.o readn.c
+gcc -g -O2 -D_REENTRANT -Wall   -c -o readable_timeo.o readable_timeo.c
+gcc -g -O2 -D_REENTRANT -Wall   -c -o rtt.o rtt.c
+gcc -g -O2 -D_REENTRANT -Wall   -c -o signal.o signal.c
+gcc -g -O2 -D_REENTRANT -Wall   -c -o signal_intr.o signal_intr.c
+gcc -g -O2 -D_REENTRANT -Wall   -c -o sock_bind_wild.o sock_bind_wild.c
+gcc -g -O2 -D_REENTRANT -Wall   -c -o sock_cmp_addr.o sock_cmp_addr.c
+gcc -g -O2 -D_REENTRANT -Wall   -c -o sock_cmp_port.o sock_cmp_port.c
+gcc -g -O2 -D_REENTRANT -Wall   -c -o sock_ntop.o sock_ntop.c
+gcc -g -O2 -D_REENTRANT -Wall   -c -o sock_ntop_host.o sock_ntop_host.c
+gcc -g -O2 -D_REENTRANT -Wall   -c -o sock_get_port.o sock_get_port.c
+gcc -g -O2 -D_REENTRANT -Wall   -c -o sock_set_addr.o sock_set_addr.c
+gcc -g -O2 -D_REENTRANT -Wall   -c -o sock_set_port.o sock_set_port.c
+gcc -g -O2 -D_REENTRANT -Wall   -c -o sock_set_wild.o sock_set_wild.c
+sock_set_wild.c: In function ‘sock_set_wild’:
+sock_set_wild.c:24:15: warning: ‘wildptr’ may be used uninitialized in this function [-Wuninitialized]
+gcc -g -O2 -D_REENTRANT -Wall   -c -o sockfd_to_family.o sockfd_to_family.c
+gcc -g -O2 -D_REENTRANT -Wall   -c -o str_cli.o str_cli.c
+gcc -g -O2 -D_REENTRANT -Wall   -c -o str_echo.o str_echo.c
+gcc -g -O2 -D_REENTRANT -Wall   -c -o tcp_connect.o tcp_connect.c
+gcc -g -O2 -D_REENTRANT -Wall   -c -o tcp_listen.o tcp_listen.c
+gcc -g -O2 -D_REENTRANT -Wall   -c -o tv_sub.o tv_sub.c
+gcc -g -O2 -D_REENTRANT -Wall   -c -o udp_client.o udp_client.c
+gcc -g -O2 -D_REENTRANT -Wall   -c -o udp_connect.o udp_connect.c
+gcc -g -O2 -D_REENTRANT -Wall   -c -o udp_server.o udp_server.c
+gcc -g -O2 -D_REENTRANT -Wall   -c -o wraplib.o wraplib.c
+gcc -g -O2 -D_REENTRANT -Wall   -c -o wrapsock.o wrapsock.c
+gcc -g -O2 -D_REENTRANT -Wall   -c -o wrapstdio.o wrapstdio.c
+gcc -g -O2 -D_REENTRANT -Wall   -c -o wrappthread.o wrappthread.c
+gcc -g -O2 -D_REENTRANT -Wall   -c -o wrapunix.o wrapunix.c
+wrapunix.c: In function ‘Sysctl’:
+wrapunix.c:217:2: warning: implicit declaration of function ‘sysctl’ [-Wimplicit-function-declaration]
+gcc -g -O2 -D_REENTRANT -Wall   -c -o write_fd.o write_fd.c
+write_fd.c: In function ‘write_fd’:
+write_fd.c:24:2: warning: dereferencing type-punned pointer will break strict-aliasing rules [-Wstrict-aliasing]
+gcc -g -O2 -D_REENTRANT -Wall   -c -o writen.o writen.c
+gcc -g -O2 -D_REENTRANT -Wall   -c -o writable_timeo.o writable_timeo.c
+ar rv ../libunp.a connect_nonb.o connect_timeo.o daemon_inetd.o daemon_init.o dg_cli.o dg_echo.o error.o get_ifi_info.o gf_time.o host_serv.o mcast_leave.o mcast_join.o mcast_get_if.o mcast_get_loop.o mcast_get_ttl.o mcast_set_if.o mcast_set_loop.o mcast_set_ttl.o my_addrs.o read_fd.o readline.o readn.o readable_timeo.o rtt.o signal.o signal_intr.o sock_bind_wild.o sock_cmp_addr.o sock_cmp_port.o sock_ntop.o sock_ntop_host.o sock_get_port.o sock_set_addr.o sock_set_port.o sock_set_wild.o sockfd_to_family.o str_cli.o str_echo.o tcp_connect.o tcp_listen.o tv_sub.o udp_client.o udp_connect.o udp_server.o wraplib.o wrapsock.o wrapstdio.o wrappthread.o wrapunix.o write_fd.o writen.o writable_timeo.o
+ar: creating ../libunp.a
+a - connect_nonb.o
+a - connect_timeo.o
+a - daemon_inetd.o
+a - daemon_init.o
+a - dg_cli.o
+a - dg_echo.o
+a - error.o
+a - get_ifi_info.o
+a - gf_time.o
+a - host_serv.o
+a - mcast_leave.o
+a - mcast_join.o
+a - mcast_get_if.o
+a - mcast_get_loop.o
+a - mcast_get_ttl.o
+a - mcast_set_if.o
+a - mcast_set_loop.o
+a - mcast_set_ttl.o
+a - my_addrs.o
+a - read_fd.o
+a - readline.o
+a - readn.o
+a - readable_timeo.o
+a - rtt.o
+a - signal.o
+a - signal_intr.o
+a - sock_bind_wild.o
+a - sock_cmp_addr.o
+a - sock_cmp_port.o
+a - sock_ntop.o
+a - sock_ntop_host.o
+a - sock_get_port.o
+a - sock_set_addr.o
+a - sock_set_port.o
+a - sock_set_wild.o
+a - sockfd_to_family.o
+a - str_cli.o
+a - str_echo.o
+a - tcp_connect.o
+a - tcp_listen.o
+a - tv_sub.o
+a - udp_client.o
+a - udp_connect.o
+a - udp_server.o
+a - wraplib.o
+a - wrapsock.o
+a - wrapstdio.o
+a - wrappthread.o
+a - wrapunix.o
+a - write_fd.o
+a - writen.o
+a - writable_timeo.o
+ranlib ../libunp.a
+
+得到libunp.a文件
+
+3.到libgai下make，生成libgai下的libunp.a文件
+cd ../libgai   # the getaddrinfo() and getnameinfo() functions  
+make
+还是有 in_pktinfo 重定义的问题
+注意：lib和libgai下都有unp.h这个文件，这里改的是libgai下的unp.h文件
+修改后重新到libgai下make，通过：
+gcc -g -O2 -D_REENTRANT -Wall -D_GNU_SOURCE   -c -o getaddrinfo.o getaddrinfo.c
+gcc -g -O2 -D_REENTRANT -Wall -D_GNU_SOURCE   -c -o getnameinfo.o getnameinfo.c
+gcc -g -O2 -D_REENTRANT -Wall -D_GNU_SOURCE   -c -o freeaddrinfo.o freeaddrinfo.c
+gcc -g -O2 -D_REENTRANT -Wall -D_GNU_SOURCE   -c -o gai_strerror.o gai_strerror.c
+gcc -g -O2 -D_REENTRANT -Wall -D_GNU_SOURCE   -c -o ga_aistruct.o ga_aistruct.c
+gcc -g -O2 -D_REENTRANT -Wall -D_GNU_SOURCE   -c -o ga_clone.o ga_clone.c
+gcc -g -O2 -D_REENTRANT -Wall -D_GNU_SOURCE   -c -o ga_echeck.o ga_echeck.c
+gcc -g -O2 -D_REENTRANT -Wall -D_GNU_SOURCE   -c -o ga_nsearch.o ga_nsearch.c
+gcc -g -O2 -D_REENTRANT -Wall -D_GNU_SOURCE   -c -o ga_port.o ga_port.c
+gcc -g -O2 -D_REENTRANT -Wall -D_GNU_SOURCE   -c -o ga_serv.o ga_serv.c
+gcc -g -O2 -D_REENTRANT -Wall -D_GNU_SOURCE   -c -o ga_unix.o ga_unix.c
+gcc -g -O2 -D_REENTRANT -Wall -D_GNU_SOURCE   -c -o gn_ipv46.o gn_ipv46.c
+ar rv ../libunp.a getaddrinfo.o getnameinfo.o freeaddrinfo.o gai_strerror.o ga_aistruct.o ga_clone.o ga_echeck.o ga_nsearch.o ga_port.o ga_serv.o ga_unix.o gn_ipv46.o
+a - getaddrinfo.o
+a - getnameinfo.o
+a - freeaddrinfo.o
+a - gai_strerror.o
+a - ga_aistruct.o
+a - ga_clone.o
+a - ga_echeck.o
+a - ga_nsearch.o
+a - ga_port.o
+a - ga_serv.o
+a - ga_unix.o
+a - gn_ipv46.o
+ranlib ../libunp.a
+
+执行后lib目录消失，取而代之的是每个实例文件夹下都生成了一个unp.h
+
+4.将生成的libunp.a静态库复制到/usr/lib/和/usr/lib64/中
+
+cd ..   //回到unpv12e目录  
+sudo cp libunp.a /usr/lib  
+sudo cp libunp.a /usr/lib64 
+
+5.修改unp.h并将其和config.h拷贝到/usr/include中，为了以后include方便
+gedit lib/unp.h   //将unp.h中#include "../config.h"修改为#include "config.h"  （由于每个文件夹下都生成了unp.h且都 include "../config.h"
+故不需要理会）
+
+sudo cp lib/unp.h /usr/include  
+sudo cp config.h /usr/include  

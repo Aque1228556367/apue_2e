@@ -1,0 +1,22 @@
+参照：
+http://blog.163.com/zlj_bj/blog/static/6146825120100721459290/
+
+① 场景服务器进程 sceneserver 启动失败，
+查看 sceneserver.log 日志，最后一行：
+[2014-06-26 14:56:45] DEBUG : Try to malloc share memory of 113636336 bytes...
+[2014-06-26 14:56:45] DEBUG : Alloc share memory failed, Invalid argument
+
+提示共享内存分配失败
+
+② 检查虚拟机为Ubuntu 分配内存大小
+③ 如果内存足够，检查系统为共享内存分配的大小：
+cat /proc/sys/kernel/shmmax 
+如果不够，则将这个值改大
+【Ubuntu 默认共享内存大小】33554432
+【开发CentOS使用的共享内存大小】4294967295
+echo "4294967295" > /proc/sys/kernel/shmmax 
+若是永久性的修改：
+/etc/sysctl.conf 最后添加一行，这个更改在系统重新启动后生效
+kernel.shmmax = 0xffffff
+kernel.shmmax = 0x40000000 （设为1G）
+

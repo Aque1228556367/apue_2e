@@ -1,0 +1,15 @@
+注意：vim 配置是针对每个用户自身的，所以要到每一个账户目录下去修改（当然也包括 /root）
+系统默认的是 vi 功能简单，且不支持各种 vim 的操作
+比如插入操作 insert，快捷键 i 不起作用
+
+在 .vimrc 中添加 set nocompatible
+set 即可，至少保证 vi 可以进行插入操作
+
+把我弄好的 vimrc 文件放到各个用户的 ~ 目录下
+去 mv vimrc .vimrc
+重启 vi 即可
+
+系统默认没安装 vim，可以用 apt-get install vim 安装
+或者使用 Ubuntu 商店安装，默认安装在
+/usr/share/vim
+
