@@ -1,4 +1,0 @@
-set nocompatible
-set termencoding=utf-8,gb2312,gbk
-set fileencodings=utf-8,gb2312,gbk
-set encoding=prc
