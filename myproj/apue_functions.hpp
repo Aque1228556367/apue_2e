@@ -22,49 +22,64 @@ long sysconf(int name);
 long pathconf(const char* pathname, int name);
 long fpathof(int fields, int name);
 
-// 3.3(P62)
+// 3.3(P62) 打开和创建文件
+// 若成功则返回文件描述符，失败返回-1
 #include <fcntl.h>
+// oflag : [O_RDONLY, O_WRONLY, O_RDWR] only one + other "O_***" sign
+// 若 oflag为 O_CREAT, 需要使用第三个参数 mode(4.5节), 表示该文件的用户权限
 int open(const char* pathname, int oflag, ... /*mode_t mode*/);
 
-// 3.4(P64)
+// 3.4(P64) 创建一个文件并以只写的方式打开。如果原来该文件存在，会将这个文件的长度截短为0
+// 若成功则返回为“只写”打开的文件描述符，失败返回-1
 #include <fcntl.h>
 // See in fig3.2
+// 等效于 open( O_WRONLY | O_CREAT | O_TRUNC, mode )
+// 由于创建文件后是以只写的方式打开，因此局限性比较大, 现一般使用
+// open( O_RDWR | O_CREAT | O_TRUNC, mode ) 代替
 int creat(const char* pathname, mode_t mode);
 
-// 3.5(P64)
+// 3.5(P64) 关闭一个关联该文件描述符的文件
+// 若成功则返回0，失败返回-1
 #include<unistd.h>	// Only for Unix
 int close(int fields);
 
-// 3.6(P64)
+// 3.6(P64) 显式的为一个打开的文件设置其偏移量
+// 若成功则返回新的文件偏移量，出错返回-1
 #include <unistd.h>	// Only for Unix
 // See in fig3.1, fig3.2
+// whence : SEEK_SET, SEEK_CUR or SEEK_END
 off_t lseek(int fields, off_t offset, int whence);
 
-// 3.7(P67) and 3.8(P68)
+// 3.7(P67) and 3.8(P68) 从打开文件中读/写数据
 // See in fig1.4
 #include <unistd.h>	// Only for Unix
+// 若成功则返回读到的字节数，若已到达文件尾则返回0，出错返回-1
 // See in fig3.4
 ssize_t read(int fields, void* buf, size_t bytes);
+// 若成功则返回已经写入的字节数，出错返回-1
 // See in fig3.2, fig3.4
 ssize_t write(int fields, const void* buf, size_t bytes);
 
-// 3.11(P73) 原子读写
+// 3.11(P73) 原子读写, 返回值和 read/write 一致
 #include <unistd.h>	// Only for Unix
 ssize_t pread(int fields, void* buf, size_t bytes, off_t offset);
 ssize_t pwrite(int fields, const void* buf, size_t bytes, off_t offset);
 
 // 3.12(P74) 复制一个现存的文件描述符 fields
+// 若成功则返回新的文件描述符，失败返回-1
 #include <unistd.h>	// Only for Unix
 int dup(int fields);
 int dup2(int fields, int fields2);
 
 // 3.13(P75) 将缓存中的信息写入磁盘，保证文件和高速缓存内容一致
+// 若成功则返回0，失败返回-1
 #include <unistd.h>	// Only for Unix
 int fsync(int fields);
 int fdatasync(int fields);// Only for Linux
 void sync(void);
 
-// 3.14(P76) 改变已打开的文件性质
+// 3.14(P76) 改变已打开的文件性质 ☆☆☆☆☆
+// 若成功则依赖 cmd，若失败则返回-1
 #include <fcntl.h>
 // See in fig3.10
 int fcntl(int fields, int cmd /* , int args .. */);
