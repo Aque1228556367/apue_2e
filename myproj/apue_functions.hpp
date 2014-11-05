@@ -240,4 +240,31 @@ int clearerr(FILE* fp);
 // 从流中读取数据后，再压回流中
 int ungetc(int c, FILE* fp);
 
-// 5.7(P130)
+// 5.7(P130) 每次一行 I/O
+
+// fgets/gets：若成功则返回 buf，若已达到文件结尾或出错则返回 NULL
+// 两个函数都指定了缓冲区的地址，读入的行将送入其中。gets 从标准输入读，fgets 从指定的流读
+#include <stdio.h>
+
+// fgets 必须指定缓冲区的长度 n。
+// 此函数一直读到下一个换行符为止，但是不超过 n-1 个字符。
+// 读入的字符被送入缓冲区，缓冲区以 null 字符结尾。
+// 若改行（包括最后一个换行符）的字符数超过 n-1，则 fgets 只返回一个不完整的行
+// 但是，缓冲区总是以 null 字符结尾，对 fgets 的下一次调用会继续改行
+char* fgets(char* __restrict buf, int n, FILE* __restrict fp );
+
+// gets 是一个不推荐使用的函数。其问题是调用者在使用 gets 时不能指定缓冲区的长度。
+// 如果该行长度大于缓冲区长度，会造成缓冲区溢出，写到缓冲区之后的存储空间中
+// 产生不可预料的后果。gets 会将换行符存入缓冲区，fgets 则不会
+char* gets(char* buf);
+
+// fputs/puts：若成功则返回非负值，若出错则返回 EOF
+
+// fputs 将一个以 null 符终止的字符串写到指定的流，尾端的终止符 null 不写出。
+// 注意：并不是每次输出一行，因为它并不要求在 null 符之前一定是换行符。
+// 通常，在 null 符之前是一个换行符，但并不要求总是如此。
+int fputs(const char* __restrict str, FILE* __restrict fp);
+
+// puts 将一个以 null 符终止的字符串写到标准输出，终止符不写出。
+// 但是，puts 然后又将一个换行符写到标准输出。
+int puts(const char* str);
