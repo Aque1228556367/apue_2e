@@ -1,19 +1,23 @@
+// 8.4 vfork 函数
+// 程序清单 8-2 vfork 函数示例（P191）
 #include "myerr.h"
 #include "apue.h"
 
-int		glob = 6;		/* external variable in initialized data */
+int	glob = 6;		/* external variable in initialized data */
 
-int
-main(void)
+int main(void)
 {
 	int		var;		/* automatic variable on the stack */
 	pid_t	pid;
 
 	var = 88;
 	printf("before vfork\n");	/* we don't flush stdio */
-	if ((pid = vfork()) < 0) {
+	if ((pid = vfork()) < 0)
+	{
 		err_sys("vfork error");
-	} else if (pid == 0) {		/* child */
+	}
+	else if (pid == 0)
+	{		/* child */
 		glob++;					/* modify parent's variables */
 		var++;
 		_exit(0);				/* child terminates */
