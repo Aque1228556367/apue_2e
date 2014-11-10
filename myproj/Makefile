@@ -23,7 +23,7 @@ LIBAPUE		= $(WKDIR)/lib/libapue.a
 LIBS_REALEASE	=-L$(WKDIR)/lib -lapue
 LIBS_DEBUG		=-L$(WKDIR)/lib -lapueD
 
-FIG_NAME	=	fig4.22
+FIG_NAME	=	fig7.16
 
 ####### Files
 OBJECTS	 = ./debug/$(FIG_NAME).o
@@ -31,6 +31,11 @@ OBJECTS	 = ./debug/$(FIG_NAME).o
 # fig4.22 需要 fig2.15 支撑，注意 myerr.h 重复包含的问题
 ifeq ($(FIG_NAME),fig4.22)
 OBJECTS += ./debug/fig2.15.o
+endif
+
+# fig7.13 增加编译优化选项后的输出结果
+ifeq ($(FIG_NAME),fig7.13)
+CXXFLAGS += -O
 endif
 
 TARGET   = ./bin/test

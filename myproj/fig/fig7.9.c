@@ -1,3 +1,5 @@
+// 7.10 setjmp 和 longjmp 函数
+// 程序清单 7-4 进行命令处理的典型程序骨架(P173)
 #include "myerr.h"
 #include "apue.h"
 
@@ -7,8 +9,7 @@ void	do_line(char *);
 void	cmd_add(void);
 int		get_token(void);
 
-int
-main(void)
+int main(void)
 {
 	char	line[MAXLINE];
 
@@ -19,23 +20,25 @@ main(void)
 
 char	*tok_ptr;		/* global pointer for get_token() */
 
-void
-do_line(char *ptr)		/* process one line of input */
+void do_line(char *ptr)		/* process one line of input */
 {
-	int		cmd;
+	int	cmd;
 
 	tok_ptr = ptr;
-	while ((cmd = get_token()) > 0) {
-		switch (cmd) {	/* one case for each command */
+	while ((cmd = get_token()) > 0)
+	{
+		switch (cmd)
+		{	/* one case for each command */
 		case TOK_ADD:
 				cmd_add();
 				break;
+		default:
+			break;
 		}
 	}
 }
 
-void
-cmd_add(void)
+void cmd_add(void)
 {
 	int		token;
 
@@ -43,8 +46,7 @@ cmd_add(void)
 	/* rest of processing for this command */
 }
 
-int
-get_token(void)
+int get_token(void)
 {
 	/* fetch next token from line pointed to by tok_ptr */
 }

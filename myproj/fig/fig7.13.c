@@ -1,5 +1,7 @@
-#include "myerr.h"
-#include "apue.h"
+// 7.10 setjmp 和 longjmp 函数
+// 程序清单 7-6 longjmp 对各类变量的影响(P177)
+#include <stdio.h>
+#include <stdlib.h>
 #include <setjmp.h>
 
 static void	f1(int, int, int, int);
@@ -8,8 +10,7 @@ static void	f2(void);
 static jmp_buf	jmpbuffer;
 static int		globval;
 
-int
-main(void)
+int main(void)
 {
 	int				autoval;
 	register int	regival;
@@ -18,7 +19,8 @@ main(void)
 
 	globval = 1; autoval = 2; regival = 3; volaval = 4; statval = 5;
 
-	if (setjmp(jmpbuffer) != 0) {
+	if (setjmp(jmpbuffer) != 0)
+	{
 		printf("after longjmp:\n");
 		printf("globval = %d, autoval = %d, regival = %d,"
 		    " volaval = %d, statval = %d\n",
@@ -36,8 +38,7 @@ main(void)
 	exit(0);
 }
 
-static void
-f1(int i, int j, int k, int l)
+static void f1(int i, int j, int k, int l)
 {
 	printf("in f1():\n");
 	printf("globval = %d, autoval = %d, regival = %d,"
@@ -45,8 +46,7 @@ f1(int i, int j, int k, int l)
 	f2();
 }
 
-static void
-f2(void)
+static void f2(void)
 {
 	longjmp(jmpbuffer, 1);
 }
