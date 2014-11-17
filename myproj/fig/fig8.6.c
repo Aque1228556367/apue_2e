@@ -1,9 +1,10 @@
+// 8.6 wait 和 waitpid 函数
+// 程序清单 8-4 演示不同的 exit 值（P195）
 #include "myerr.h"
 #include "apue.h"
 #include <sys/wait.h>
 
-int
-main(void)
+int main(void)
 {
 	pid_t	pid;
 	int		status;
