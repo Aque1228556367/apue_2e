@@ -1,34 +1,52 @@
+// 8.9 竞争条件
+// 程序清单 8-7 修改程序清单 8-6 以避免竞争条件(P201)
+
+// 疑问：
+// 通过观察，发现 fig8.12.c 和 fig8.13.c 实际多次运行结果后，
+// 都有可能出现输出错位的情况，而不是像书中所说那样的后者输出稳定
+
 #include "myerr.h"
 #include "apue.h"
 
 static void charatatime(char *);
 
-int
-main(void)
+int main(void)
 {
-	pid_t	pid;
+	pid_t pid;
 
 	TELL_WAIT();
 
-	if ((pid = fork()) < 0) {
+	if ((pid = fork()) < 0)
+	{
 		err_sys("fork error");
-	} else if (pid == 0) {
+	}
+	else if (pid == 0)
+	{
 		WAIT_PARENT();		/* parent goes first */
 		charatatime("output from child\n");
-	} else {
+	}
+	else
+	{
 		charatatime("output from parent\n");
 		TELL_CHILD(pid);
 	}
 	exit(0);
 }
 
-static void
-charatatime(char *str)
+static void charatatime(char *str)
 {
-	char	*ptr;
-	int		c;
+	char *ptr = NULL;
+	int	c = 0;
 
 	setbuf(stdout, NULL);			/* set unbuffered */
 	for (ptr = str; (c = *ptr++) != 0; )
 		putc(c, stdout);
 }
+
+// 可通过下列脚本，更好的观察每次输出结果：
+/*
+for (( i=0;i<5;++i ));
+do
+        ./test
+done
+*/

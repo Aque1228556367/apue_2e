@@ -1,15 +1,18 @@
+// 8.7 wait 和 waitpid 函数
+// 程序清单 8-5 调用 fork 两次以避免僵死进程(P197)
 #include "myerr.h"
 #include "apue.h"
 #include <sys/wait.h>
 
-int
-main(void)
+int main(void)
 {
 	pid_t	pid;
-
-	if ((pid = fork()) < 0) {
+	if ((pid = fork()) < 0)
+	{
 		err_sys("fork error");
-	} else if (pid == 0) {		/* first child */
+	}
+	else if (pid == 0)
+	{		/* first child */
 		if ((pid = fork()) < 0)
 			err_sys("fork error");
 		else if (pid > 0)
@@ -33,5 +36,6 @@ main(void)
 	 * We're the parent (the original process); we continue executing,
 	 * knowing that we're not the parent of the second child.
 	 */
+	printf("The parent process will be exited .\n");
 	exit(0);
 }
