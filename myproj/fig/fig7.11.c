@@ -19,7 +19,6 @@ char	*tok_ptr;		/* global pointer for get_token() */
 int main(void)
 {
 	char line[MAXLINE] = { 0 };
-	sub = 0;
 
 	printf("setjmp\n");
 
