@@ -1,18 +1,19 @@
+// 10.10 alarm 和 pause 函数
+// 程序清单 10-4 sleep的简单而不完整的实现(P267)
 #include "myerr.h"
-#include	<signal.h>
-#include	<unistd.h>
+#include <signal.h>
+#include <unistd.h>
 
-static void
-sig_alrm(int signo)
+static void sig_alrm(int signo)
 {
 	/* nothing to do, just return to wake up the pause */
 }
 
-unsigned int
-sleep1(unsigned int nsecs)
+unsigned int sleep1(unsigned int nsecs)
 {
 	if (signal(SIGALRM, sig_alrm) == SIG_ERR)
 		return(nsecs);
+
 	alarm(nsecs);		/* start the timer */
 	pause();			/* next caught signal wakes us up */
 	return(alarm(0));	/* turn off timer, return unslept time */

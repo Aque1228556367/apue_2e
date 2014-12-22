@@ -10,8 +10,10 @@ CC		= gcc
 CXX		= g++
 LEX		= flex
 YACC     	= yacc
-CFLAGS   	= -DLINUX -g -ansi -Wall -D_GNU_SOURCE $(EXTRA)
-CXXFLAGS 	= -g   -pipe -Werror -DENCODING_UTF8 -DCHARSET_SHOW_GBK
+#CFLAGS   	= -DLINUX -g -ansi -Wall -D_GNU_SOURCE $(EXTRA)
+CFLAGS   	= -DLINUX -g -ansi -D_GNU_SOURCE -std=c99
+#CXXFLAGS 	= -g   -pipe -Werror -DENCODING_UTF8 -DCHARSET_SHOW_GBK
+CXXFLAGS 	= -g   -pipe -DENCODING_UTF8 -DCHARSET_SHOW_GBK
 
 
 ####### third party objects, that may be not need -g to make .o much smaller 
@@ -23,7 +25,7 @@ LIBAPUE		= $(WKDIR)/lib/libapue.a
 LIBS_REALEASE	=-L$(WKDIR)/lib -lapue
 LIBS_DEBUG		=-L$(WKDIR)/lib -lapueD
 
-FIG_NAME	=	fig7.16
+FIG_NAME	=	fig10.9
 
 ####### Files
 OBJECTS	 = ./debug/$(FIG_NAME).o
@@ -36,6 +38,12 @@ endif
 # fig7.13 增加编译优化选项后的输出结果
 ifeq ($(FIG_NAME),fig7.13)
 CXXFLAGS += -O
+CFLAGS += -O
+endif
+
+# fig10.9 需要 fig10.8 支撑，注意 myerr.h 重复包含的问题
+ifeq ($(FIG_NAME),fig10.9)
+OBJECTS += ./debug/fig10.8.o
 endif
 
 TARGET   = ./bin/test
@@ -45,11 +53,16 @@ all:  $(TARGET)
 	echo "all"
 
 ./debug/$(FIG_NAME).o : $(SRC)/$(FIG_NAME).c
-	$(CC) -c  $(CXXFLAGS) $(INCPATH) -o $@ $< 
+	$(CC) -c  $(CFLAGS) $(INCPATH) -o $@ $< 
 
 ifeq ($(FIG_NAME),fig4.22)
 ./debug/fig2.15.o :  $(SRC)/fig2.15.c
-	$(CC) -c  $(CXXFLAGS) $(INCPATH) -o $@ $< 
+	$(CC) -c  $(CFLAGS) $(INCPATH) -o $@ $< 
+endif
+
+ifeq ($(FIG_NAME),fig10.9)
+./debug/fig10.8.o :  $(SRC)/fig10.8.c
+	$(CC) -c  $(CFLAGS) $(INCPATH) -o $@ $< 
 endif
 	
 $(TARGET): $(OBJECTS)
