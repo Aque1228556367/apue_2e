@@ -17,3 +17,8 @@ sudo passwd root
 重启ubuntu，登录窗口会有“登录”选项，这时候我们就可以通过root登录了。
 
 http://www.linuxidc.com/Linux/2012-05/60806.htm
+
+Ubuntu 14.04 以root登陆的方式：
+sudo gedit /usr/share/lightdm/lightdm.conf.d/50-ubuntu.conf
+在弹出的编辑框里输入：greeter-show-manual-login=true 保存关闭
+然后重启系统就可以看到 Login 输入框了
