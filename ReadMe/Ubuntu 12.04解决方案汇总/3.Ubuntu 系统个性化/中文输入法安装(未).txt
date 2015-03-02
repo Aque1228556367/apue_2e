@@ -1,0 +1,2 @@
+Ubuntu 14.04 中文输入法安装教程：
+http://www.cnblogs.com/zhcncn/p/4032321.html
