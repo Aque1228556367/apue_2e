@@ -3,8 +3,7 @@
 
 static void	sig_alrm(int);
 
-int
-main(void)
+int main(void)
 {
 	int		n;
 	char	line[MAXLINE];
@@ -12,6 +11,7 @@ main(void)
 	if (signal(SIGALRM, sig_alrm) == SIG_ERR)
 		err_sys("signal(SIGALRM) error");
 
+	// alarm 函数设置计时器超时，产生 SIGALRM 信号
 	alarm(10);
 	if ((n = read(STDIN_FILENO, line, MAXLINE)) < 0)
 		err_sys("read error");
