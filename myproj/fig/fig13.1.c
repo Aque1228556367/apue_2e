@@ -1,11 +1,12 @@
-#include "myerr.h"
+// 13.3 (守护进程)编程规则
+// 程序清单 13-1 初始化一个守护进程
+// #include "myerr.h"
 #include "apue.h"
 #include <syslog.h>
 #include <fcntl.h>
 #include <sys/resource.h>
 
-void
-daemonize(const char *cmd)
+void daemonize(const char *cmd)
 {
 	int					i, fd0, fd1, fd2;
 	pid_t				pid;
@@ -71,7 +72,8 @@ daemonize(const char *cmd)
 	 * Initialize the log file.
 	 */
 	openlog(cmd, LOG_CONS, LOG_DAEMON);
-	if (fd0 != 0 || fd1 != 1 || fd2 != 2) {
+	if (fd0 != 0 || fd1 != 1 || fd2 != 2)
+	{
 		syslog(LOG_ERR, "unexpected file descriptors %d %d %d",
 		  fd0, fd1, fd2);
 		exit(1);

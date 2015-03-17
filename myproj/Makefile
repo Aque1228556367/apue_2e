@@ -25,7 +25,7 @@ LIBAPUE		= $(WKDIR)/lib/libapue.a
 LIBS_REALEASE	=-L$(WKDIR)/lib -lapue
 LIBS_DEBUG		=-L$(WKDIR)/lib -lapueD
 
-FIG_NAME	=	fig10.9
+FIG_NAME	=	fig13.7
 
 ####### Files
 OBJECTS	 = ./debug/$(FIG_NAME).o
@@ -46,6 +46,13 @@ ifeq ($(FIG_NAME),fig10.9)
 OBJECTS += ./debug/fig10.8.o
 endif
 
+# fig13.7 需要 fig13.1, fig13.6, fig14.9 支撑，注意 myerr.h 重复包含的问题
+ifeq ($(FIG_NAME),fig13.7)
+OBJECTS += ./debug/fig13.1.o
+OBJECTS += ./debug/fig13.6.o
+OBJECTS += ./debug/fig14.9.o
+endif
+
 TARGET   = ./bin/test
 
 # makefile 的首个目标视为默认目标，即只输入make就可执行的目标
@@ -62,6 +69,15 @@ endif
 
 ifeq ($(FIG_NAME),fig10.9)
 ./debug/fig10.8.o :  $(SRC)/fig10.8.c
+	$(CC) -c  $(CFLAGS) $(INCPATH) -o $@ $< 
+endif
+
+ifeq ($(FIG_NAME),fig13.7)
+./debug/fig13.1.o :  $(SRC)/fig13.1.c
+	$(CC) -c  $(CFLAGS) $(INCPATH) -o $@ $< 
+./debug/fig13.6.o :  $(SRC)/fig13.6.c
+	$(CC) -c  $(CFLAGS) $(INCPATH) -o $@ $< 
+./debug/fig14.9.o :  $(SRC)/fig14.9.c
 	$(CC) -c  $(CFLAGS) $(INCPATH) -o $@ $< 
 endif
 	

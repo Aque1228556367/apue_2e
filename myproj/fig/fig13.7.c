@@ -1,3 +1,5 @@
+// 13.6 守护进程的惯例
+// 程序清单 13-3 守护进程重读配置文件
 #include "myerr.h"
 #include "apue.h"
 #include <pthread.h>
@@ -6,26 +8,28 @@
 sigset_t	mask;
 
 extern int already_running(void);
+extern void daemonize(const char *cmd);
 
-void
-reread(void)
+void reread(void)
 {
 	/* ... */
 }
 
-void *
-thr_fn(void *arg)
+void* thr_fn(void *arg)
 {
 	int err, signo;
 
-	for (;;) {
+	for (;;)
+	{
 		err = sigwait(&mask, &signo);
-		if (err != 0) {
+		if (err != 0)
+		{
 			syslog(LOG_ERR, "sigwait failed");
 			exit(1);
 		}
 
-		switch (signo) {
+		switch (signo)
+		{
 		case SIGHUP:
 			syslog(LOG_INFO, "Re-reading configuration file");
 			reread();
@@ -42,8 +46,7 @@ thr_fn(void *arg)
 	return(0);
 }
 
-int
-main(int argc, char *argv[])
+int main(int argc, char *argv[])
 {
 	int					err;
 	pthread_t			tid;
@@ -63,7 +66,8 @@ main(int argc, char *argv[])
 	/*
 	 * Make sure only one copy of the daemon is running.
 	 */
-	if (already_running()) {
+	if (already_running())
+	{
 		syslog(LOG_ERR, "daemon already running");
 		exit(1);
 	}

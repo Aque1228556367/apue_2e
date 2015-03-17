@@ -1,8 +1,10 @@
-#include "myerr.h"
+// #include "myerr.h"
 #include <unistd.h>
 #include <stdlib.h>
 #include <fcntl.h>
 #include <syslog.h>
+// 13.5 单实例守护进程
+// 程序清单 13-2 保证只运行某个守护进程的一个副本
 #include <string.h>
 #include <errno.h>
 #include <stdio.h>
@@ -13,19 +15,21 @@
 
 extern int lockfile(int);
 
-int
-already_running(void)
+int already_running(void)
 {
 	int		fd;
 	char	buf[16];
 
 	fd = open(LOCKFILE, O_RDWR|O_CREAT, LOCKMODE);
-	if (fd < 0) {
+	if (fd < 0)
+	{
 		syslog(LOG_ERR, "can't open %s: %s", LOCKFILE, strerror(errno));
 		exit(1);
 	}
-	if (lockfile(fd) < 0) {
-		if (errno == EACCES || errno == EAGAIN) {
+	if (lockfile(fd) < 0)
+	{
+		if (errno == EACCES || errno == EAGAIN)
+		{
 			close(fd);
 			return(1);
 		}
