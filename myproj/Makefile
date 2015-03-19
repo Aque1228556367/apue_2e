@@ -48,6 +48,8 @@ endif
 
 # fig13.7 需要 fig13.1, fig13.6, fig14.9 支撑，注意 myerr.h 重复包含的问题
 ifeq ($(FIG_NAME),fig13.7)
+LIBS_REALEASE += -lpthread
+LIBS_DEBUG += -lpthread
 OBJECTS += ./debug/fig13.1.o
 OBJECTS += ./debug/fig13.6.o
 OBJECTS += ./debug/fig14.9.o

@@ -41,10 +41,13 @@ void daemonize(const char *cmd)
 	sa.sa_flags = 0;
 	if (sigaction(SIGHUP, &sa, NULL) < 0)
 		err_quit("%s: can't ignore SIGHUP");
+
 	if ((pid = fork()) < 0)
 		err_quit("%s: can't fork", cmd);
 	else if (pid != 0) /* parent */
 		exit(0);
+	else
+		printf("The daemon pid : %d\n", getpid() );
 
 	/*
 	 * Change the current working directory to the root so
@@ -79,3 +82,11 @@ void daemonize(const char *cmd)
 		exit(1);
 	}
 }
+
+/*int main()
+{
+	daemonize("test");
+	sleep(10);
+	return 0;
+}*/
+
