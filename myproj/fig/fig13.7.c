@@ -1,4 +1,4 @@
-// 13.6 守护进程的惯例
+// 13.6 守护进程的惯例(P363)
 // 程序清单 13-3 守护进程重读配置文件
 #include "myerr.h"
 #include "apue.h"
@@ -13,14 +13,21 @@ extern void daemonize(const char *cmd);
 void reread(void)
 {
 	/* ... */
+	printf("Func : reread\n");
 }
 
+// 我们阻塞所有信号，然后让我们创建的线程用 sigwait() 来处理这些信号
+// SIGHUP 和 SIGTERM 的默认动作是终止进程，当进程接收到这两个信号时，
+// 守护进程不会消亡
 void* thr_fn(void *arg)
 {
 	int err, signo;
 
 	for (;;)
 	{
+		// 等待指定信号集mask中，一个或多个信号的发生（P348）
+		// 注意：在调用 sigwait() 之前，一定保证 mask 中的信号都被阻塞
+		// 否则会出现时间窗口，导致信号在调用 sigwait() 之前就被递送
 		err = sigwait(&mask, &signo);
 		if (err != 0)
 		{
@@ -81,6 +88,9 @@ int main(int argc, char *argv[])
 	if (sigaction(SIGHUP, &sa, NULL) < 0)
 		err_quit("%s: can't restore SIGHUP default");
 	sigfillset(&mask);
+
+	// 多线程环境下，更改线程的信号屏蔽字（阻塞而不能递送给当前进程/线程的信号集）（12.8节，P334）
+	// 和单线程环境下的 sigprocmask() 函数对应（详见 P272 sigprocmask() 函数）
 	if ((err = pthread_sigmask(SIG_BLOCK, &mask, NULL)) != 0)
 		err_exit(err, "SIG_BLOCK error");
 
@@ -95,5 +105,6 @@ int main(int argc, char *argv[])
 	 * Proceed with the rest of the daemon.
 	 */
 	/* ... */
+	sleep(10);
 	exit(0);
 }

@@ -1,10 +1,9 @@
-// #include "myerr.h"
+// 13.5 单实例守护进程(P363)
+// 程序清单 13-2 保证只运行某个守护进程的一个副本
 #include <unistd.h>
 #include <stdlib.h>
 #include <fcntl.h>
 #include <syslog.h>
-// 13.5 单实例守护进程
-// 程序清单 13-2 保证只运行某个守护进程的一个副本
 #include <string.h>
 #include <errno.h>
 #include <stdio.h>
