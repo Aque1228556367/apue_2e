@@ -9,7 +9,9 @@
 #include <stdio.h>
 #include <sys/stat.h>
 
+// 守护进程可能需要有root权限才能在此目录下创建文件
 #define LOCKFILE "/var/run/daemon.pid"
+
 #define LOCKMODE (S_IRUSR|S_IWUSR|S_IRGRP|S_IROTH)
 
 extern int lockfile(int);

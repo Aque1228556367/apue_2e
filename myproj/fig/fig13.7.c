@@ -1,5 +1,8 @@
 // 13.6 守护进程的惯例(P363)
 // 程序清单 13-3 守护进程重读配置文件
+// 可通过 tail -f /var/log/syslog 观察守护进程启动日志
+// 注意：若想成功启动程序必须切换到 root 用户，否则 already_running()
+// 会报错：can't open /var/run/daemon.pid: Permission denied
 #include "myerr.h"
 #include "apue.h"
 #include <pthread.h>
@@ -105,6 +108,6 @@ int main(int argc, char *argv[])
 	 * Proceed with the rest of the daemon.
 	 */
 	/* ... */
-	sleep(10);
+	sleep(30);
 	exit(0);
 }
