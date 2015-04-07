@@ -1,12 +1,13 @@
+// 14.9 存储映射I/O
+// 程序清单 14-12 用存储映射I/O复制文件(P408)
 #include "myerr.h"
 #include "apue.h"
 #include <fcntl.h>
 #include <sys/mman.h>
 
-int
-main(int argc, char *argv[])
+int main(int argc, char *argv[])
 {
-	int			fdin, fdout;
+	int		fdin, fdout;
 	void		*src, *dst;
 	struct stat	statbuf;
 
