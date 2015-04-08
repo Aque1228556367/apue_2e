@@ -1,8 +1,9 @@
+// 15.2 管道
+// 程序清单 15-1 经由管道父进程向子进程传送数据(P414)
 #include "myerr.h"
 #include "apue.h"
 
-int
-main(void)
+int main(void)
 {
 	int		n;
 	int		fd[2];
@@ -11,12 +12,18 @@ main(void)
 
 	if (pipe(fd) < 0)
 		err_sys("pipe error");
-	if ((pid = fork()) < 0) {
+
+	if ((pid = fork()) < 0) 
+	{
 		err_sys("fork error");
-	} else if (pid > 0) {		/* parent */
+	} 
+	else if (pid > 0) 
+	{	/* parent */
 		close(fd[0]);
 		write(fd[1], "hello world\n", 12);
-	} else {				/* child */
+	} 
+	else 
+	{	/* child */
 		close(fd[1]);
 		n = read(fd[0], line, MAXLINE);
 		write(STDOUT_FILENO, line, n);
