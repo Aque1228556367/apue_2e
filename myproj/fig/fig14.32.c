@@ -1,5 +1,8 @@
 // 14.9 存储映射I/O
 // 程序清单 14-12 用存储映射I/O复制文件(P408)
+// 用法：在生成的可执行文件下创建两个新文件，一个作为输入一个作为输出
+// 如：./a.out testSrc.txt testDest.txt，
+// 即将 testSrc.txt 的内容复制到 testDest.txt
 #include "myerr.h"
 #include "apue.h"
 #include <fcntl.h>
