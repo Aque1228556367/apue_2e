@@ -71,6 +71,9 @@ int main(void)
 			close(fd2[1]);
 		}
 
+		/*if (execl("./add3", "add3", (char *)0) < 0)
+					err_sys("execl error");*/
+
 		if (execl("./add3", "add3", (char *)0) < 0)
 			err_sys("execl error");
 	}

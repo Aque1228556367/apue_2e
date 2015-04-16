@@ -25,7 +25,7 @@ LIBAPUE		= $(WKDIR)/lib/libapue.a
 LIBS_REALEASE	=-L$(WKDIR)/lib -lapue
 LIBS_DEBUG		=-L$(WKDIR)/lib -lapueD
 
-FIG_NAME	=	fig15.17
+FIG_NAME	=	fig15.18
 
 ####### Files
 OBJECTS	 = ./debug/$(FIG_NAME).o
