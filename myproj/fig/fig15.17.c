@@ -12,6 +12,7 @@ int main(void)
 	while ((n = read(STDIN_FILENO, line, MAXLINE)) > 0)
 	{
 		line[n] = 0;		/* null terminate */
+		// 必须读入两个字符
 		if (sscanf(line, "%d%d", &int1, &int2) == 2)
 		{
 			sprintf(line, "%d\n", int1 + int2);
