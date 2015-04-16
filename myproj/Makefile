@@ -25,7 +25,7 @@ LIBAPUE		= $(WKDIR)/lib/libapue.a
 LIBS_REALEASE	=-L$(WKDIR)/lib -lapue
 LIBS_DEBUG		=-L$(WKDIR)/lib -lapueD
 
-FIG_NAME	=	fig13.7
+FIG_NAME	=	fig15.17
 
 ####### Files
 OBJECTS	 = ./debug/$(FIG_NAME).o
@@ -55,7 +55,15 @@ OBJECTS += ./debug/fig13.6.o
 OBJECTS += ./debug/fig14.9.o
 endif
 
+# fig15.18 需要 fig15.17 作为其子进程执行 "add2" 的过滤程序
+ifeq ($(FIG_NAME),fig15.17)
+TARGET   = ./bin/add2
+else ifeq ($(FIG_NAME),fig15.19)
+# fig15.18 需要 fig15.19 作为其子进程执行 "add3" 的过滤程序
+TARGET   = ./bin/add3
+else
 TARGET   = ./bin/test
+endif
 
 # makefile 的首个目标视为默认目标，即只输入make就可执行的目标
 all:  $(TARGET)
