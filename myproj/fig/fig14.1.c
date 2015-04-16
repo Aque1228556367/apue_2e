@@ -1,3 +1,5 @@
+// 14.2 非阻塞I/O(P370)
+// 程序清单 14-1 长的非阻塞write
 #include "myerr.h"
 #include "apue.h"
 #include <errno.h>
@@ -5,8 +7,7 @@
 
 char	buf[500000];
 
-int
-main(void)
+int main(void)
 {
 	int		ntowrite, nwrite;
 	char	*ptr;
@@ -17,12 +18,14 @@ main(void)
 	set_fl(STDOUT_FILENO, O_NONBLOCK);	/* set nonblocking */
 
 	ptr = buf;
-	while (ntowrite > 0) {
+	while (ntowrite > 0)
+	{
 		errno = 0;
 		nwrite = write(STDOUT_FILENO, ptr, ntowrite);
 		fprintf(stderr, "nwrite = %d, errno = %d\n", nwrite, errno);
 
-		if (nwrite > 0) {
+		if (nwrite > 0)
+		{
 			ptr += nwrite;
 			ntowrite -= nwrite;
 		}
