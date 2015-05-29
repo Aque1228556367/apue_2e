@@ -1,0 +1,28 @@
+MySQL 安装后，使用默认的地址可以连接：
+
+/usr/bin/mysql -u[mysql用户名] -p[mysql密码] -h127.0.0.1 -P3306 --auto-rehash
+或者
+/usr/bin/mysql -u[mysql用户名] -p[mysql密码] -h localhost -P3306 --auto-rehash
+
+
+连接成功。但是使用本机地址 192.168.174.128 却不行。
+这是因为 mysql 的默认设置只允许使用默认地址 127.0.0.1
+可在 /etc/mysql/my.cnf 查看：
+
+[client]
+port            = 3306
+
+…………
+
+bind-address           = 127.0.0.1
+
+…………
+
+解决办法是，分配新用户。首先用默认地址进到 mysql，然后执行
+mysql> grant all privileges on *.* to '[mysql用户名]'@'[本机地址]' identified by '[mysql密码]'
+把：[mysql用户名]，[本机地址]，[mysql密码] 填上相应的字符。
+退出后即可生效：
+
+/usr/bin/mysql -u[mysql用户名] -p[mysql密码] -h[本机地址] -P3306 --auto-rehash
+
+连接成功！

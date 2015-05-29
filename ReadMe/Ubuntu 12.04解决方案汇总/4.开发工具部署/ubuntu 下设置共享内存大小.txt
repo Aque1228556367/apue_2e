@@ -17,6 +17,6 @@ cat /proc/sys/kernel/shmmax
 echo "4294967295" > /proc/sys/kernel/shmmax 
 若是永久性的修改：
 /etc/sysctl.conf 最后添加一行，这个更改在系统重新启动后生效
-kernel.shmmax = 0xffffff
+kernel.shmmax = 0xffffffff
 kernel.shmmax = 0x40000000 （设为1G）
 
