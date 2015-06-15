@@ -1,0 +1,12 @@
+# Example : Your remote address 
+# http://git.oschina.net/1228556367/apue_2e
+
+# update
+git pull http://git.oschina.net/1228556367/apue_2e
+
+# commit
+git add .
+git commit -m "Your Log"
+
+# push to remote address
+git push orgin master
