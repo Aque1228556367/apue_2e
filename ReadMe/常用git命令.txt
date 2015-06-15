@@ -2,7 +2,10 @@
 # http://git.oschina.net/1228556367/apue_2e
 
 # update
+# Note : 你的当前路径必须是在最外层，不能在内层的路径下
 git pull http://git.oschina.net/1228556367/apue_2e
+# 如果直接 pull remote地址不行，可以直接用下面的：
+git pull origin
 
 # commit
 git add .
