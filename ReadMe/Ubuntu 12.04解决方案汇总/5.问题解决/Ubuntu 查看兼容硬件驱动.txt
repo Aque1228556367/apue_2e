@@ -1,0 +1,2 @@
+【Ubuntu 查看兼容硬件驱动】
+http://www.ubuntu.com/certification/catalog/

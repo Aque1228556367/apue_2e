@@ -1,0 +1,15 @@
+【保存 Ubuntu apt-get 下载下来的deb包】
+
+在默认情况下ubuntu 会把我们通过apt-get 所安装的软件包保存在缓存文件夹里。
+
+我们可以把这个文件夹做个备份。如果需要重装Ubuntu时，可以把备份还原回去。
+
+这样就不能连上网络去大量更新系统软件包了
+
+ubuntu apt-get 下载的软件包放在
+
+/var/cache/apt/archives
+
+如果要清除缓存文件夹，可以执行
+
+sudo apt-get clean
