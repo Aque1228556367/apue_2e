@@ -1,0 +1,42 @@
+# MySelf Makefile
+
+CC			= gcc
+CXX			= g++
+CFLAGS   	= -g
+CXXFLAGS 	= -g
+
+LINK		= g++
+
+INCLUDE_DIRS	=
+LIBS			=
+
+BINARYDIR		= ./bin
+OBJECTDIR		= ./debug
+SRCDIR			= .
+
+TARGET 			= $(BINARYDIR)/your_bin_file
+
+OBJECTS			= $(OBJECTDIR)/main.o
+
+# Must Setup The First 
+all: mkdirdebug mkdirbin $(TARGET)
+
+# Build Objects Rule :
+$(OBJECTDIR)/main.o : $(SRCDIR)/main.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCLUDE_DIRS) -o $@ $<
+
+# create debug path
+mkdirdebug:
+	mkdir -p debug
+
+# create bin path
+mkdirbin:
+	mkdir -p bin
+
+# Build Target Binary File :
+$(TARGET): $(OBJECTS)
+	$(LINK) -o $(TARGET) $(OBJECTS) $(LIBS)
+
+clean:
+	rm -f $(OBJECTDIR)/*.o
+	rm -f $(TARGET)
